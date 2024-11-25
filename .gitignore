@@ -1,0 +1,47 @@
+node_modules/.cache/
+.cache/
+# Node modules
+node_modules/
+
+# npm package lock files (if using npm)
+package-lock.json
+
+# Yarn lock files (if using Yarn)
+yarn.lock
+
+# .env files for environment variables (do not commit sensitive data)
+.env
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Build directories and other generated files
+/dist
+/build
+/public
+
+# Cache files
+node_modules/.cache/
+
+# Temporary files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# IDE or editor files (for VS Code, JetBrains, etc.)
+.vscode/
+.idea/
+
+# Coverage reports
+coverage/
+
+# Miscellaneous
+*.tgz
+*.bak
