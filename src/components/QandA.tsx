@@ -85,7 +85,7 @@ function QandA({ data, QAdone, setQAdone }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-lg text-center"
+        className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-lg text-left"
       >
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">No Quiz Available</h2>
         <p className="text-gray-700">Please check back later or contact support.</p>
@@ -105,7 +105,7 @@ function QandA({ data, QAdone, setQAdone }) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-2xl font-semibold text-gray-800 mb-6"
+        className="text-2xl font-semibold text-gray-800 mb-6 text-left"
       >
         {question}
       </motion.h2>
@@ -136,13 +136,15 @@ function QandA({ data, QAdone, setQAdone }) {
                       ? isCorrect
                         ? "bg-green-100 border-2 border-green-400"
                         : "bg-red-100 border-2 border-red-400"
+                      : isDisabled && isCorrectOption
+                      ? "bg-green-100 border-2 border-green-400"
                       : "bg-white border border-gray-300 hover:border-blue-400"
                   } ${
                     isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"
                   }`}
                   onClick={() => !isDisabled && handleCheckboxChange(key.toUpperCase())}
                 >
-                  <span className={`text-lg ${isSelected ? "font-semibold" : ""}`}>
+                  <span className={`text-lg ${isSelected ? "font-semibold" : ""} text-left`}>
                     {answerText || "No option available"}
                   </span>
                   {isSelected && (
@@ -162,9 +164,9 @@ function QandA({ data, QAdone, setQAdone }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg shadow-inner"
+                      className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
                     >
-                      <p className="text-gray-700">{explanation}</p>
+                      <p className="text-gray-700 text-left">{explanation}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -180,7 +182,7 @@ function QandA({ data, QAdone, setQAdone }) {
           whileTap={{ scale: 0.95 }}
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className="px-6 py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
+          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
         >
           <ChevronLeft className="w-5 h-5 mr-2" />
           Previous
@@ -190,7 +192,7 @@ function QandA({ data, QAdone, setQAdone }) {
           whileTap={{ scale: 0.95 }}
           onClick={handleNext}
           disabled={currentIndex === quiz.length - 1}
-          className="px-6 py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
+          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
         >
           Next
           <ChevronRight className="w-5 h-5 ml-2" />
@@ -217,4 +219,3 @@ function QandA({ data, QAdone, setQAdone }) {
 }
 
 export default QandA;
-

@@ -89,7 +89,7 @@ function StudyPage() {
       <main className="flex-grow p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-6 text-purple-800">Study Materials</h1>
-          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+          <div className="bg-white rounded-lg shadow-md m-0 mb-6">
             {videoUrl ? (
               <VideoPlayer videoUrl={videoUrl} />
             ) : (
@@ -120,7 +120,7 @@ function StudyPage() {
             </nav>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-4">
             {activeButton === "Description" && caseData && (
               <Description description={caseData.case_description} />
             )}

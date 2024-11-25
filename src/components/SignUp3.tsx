@@ -78,7 +78,7 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
 
     if (response.ok) {
       toast.success("User registered successfully!");
-      navigate("/");
+      navigate("/login");
     } else {
       toast.error("User registration failed!");
       console.error("Error:", data);
