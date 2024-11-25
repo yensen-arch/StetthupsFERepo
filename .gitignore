@@ -24,7 +24,7 @@ Thumbs.db
 # Build directories and other generated files
 /dist
 /build
-/public
+
 
 # Cache files
 node_modules/.cache/
