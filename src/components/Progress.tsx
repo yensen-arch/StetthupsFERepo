@@ -116,29 +116,29 @@ function Progress() {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">Progress</h2>
+    <div className="p-6">
+      <h2 className="text-3xl font-bold text-purple-700 mb-12 text-left">Your Progress</h2>
       {Object.entries(subjectData).map(([subscriptionId, subjects]) => (
-        <div key={subscriptionId} className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-center">
+        <div key={subscriptionId} className="mb-12">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-left">
             {subscriptionData.find((s) => s.id === parseInt(subscriptionId))?.subscription_name ||
               "Unknown Subscription"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {subjects.slice(0, 12).map((subject) => ( // Show 4 rows, assuming 3 cards per row
-              <div key={subject.subject.id} className="bg-white rounded-lg shadow-md p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {subjects.slice(0, 12).map((subject) => (
+              <div key={subject.subject.id} className="bg-white rounded-lg shadow-lg p-5 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-4">
                   <img
                     src={subject.subject.image_path}
                     alt={subject.subject.subject_name}
-                    className="w-12 h-12 rounded-full mr-4"
+                    className="w-14 h-14 rounded-full mr-4"
                   />
-                  <h4 className="text-lg font-medium">{subject.subject.subject_name}</h4>
+                  <h4 className="text-lg font-semibold text-gray-900">{subject.subject.subject_name}</h4>
                 </div>
-                <div className="mb-2">
+                <div className="mb-4">
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
-                      className="bg-blue-600 h-2.5 rounded-full"
+                      className="bg-blue-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
                       style={{
                         width: `${
                           (subject.completed_topics / subject.total_topics) * 100

@@ -20,19 +20,18 @@ export default function Events() {
 
   return (
     <div className="w-full max-w-md p-4 font-sans">
-      <h2 className="text-2xl font-semibold text-purple-700 mb-4">Events</h2>
+      <h2 className="text-2xl font-semibold text-purple-700 mb-4 text-left">Events</h2>
       {events.map((event, index) => (
         <div
           key={index}
-          className="bg-white rounded-3xl shadow-md mb-4 overflow-hidden"
+          className="bg-white rounded-3xl shadow-md mb-4 overflow-hidden text-left"
         >
           <div className="p-4">
-            <h3 className="text-lg font-medium">{event.title}</h3>
-            <p className="text-sm text-gray-500">Hosted by {event.host}</p>
-            <div className="mt-4">
+            <h3 className="text-lg font-medium text-left">{event.title}</h3>
+            <p className="text-sm text-gray-500 text-left">Hosted by {event.host}</p>
+            <div className="mt-4 text-left">
               <p className="font-medium mb-2">Meeting Attending</p>
               <div className="flex -space-x-2 overflow-hidden">
-              
                 <img
                   src={Image}
                   alt="Attendee 1"
@@ -40,7 +39,7 @@ export default function Events() {
                 />
               </div>
             </div>
-            <div className="flex justify-between text-sm text-gray-500 mt-4">
+            <div className="flex justify-between text-sm text-gray-500 mt-4 text-left">
               <span>{event.date}</span>
               <span>{event.time}</span>
               <span>{event.platform}</span>
