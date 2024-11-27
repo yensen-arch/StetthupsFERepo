@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, X } from "lucide-react";
 
 function QandA({ data, QAdone, setQAdone }) {
   const { quiz = [] } = data;
@@ -72,7 +72,13 @@ function QandA({ data, QAdone, setQAdone }) {
   };
 
   const handleNext = () => {
-    if (currentIndex < quiz.length - 1) setCurrentIndex(currentIndex + 1);
+    if (currentIndex < quiz.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else if (QAdone) {
+      // Navigate to the Capsule tab
+      const event = new CustomEvent("navigateToCapsule");
+      window.dispatchEvent(event);
+    }
   };
 
   const handlePrevious = () => {
@@ -87,8 +93,12 @@ function QandA({ data, QAdone, setQAdone }) {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-lg text-left"
       >
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">No Quiz Available</h2>
-        <p className="text-gray-700">Please check back later or contact support.</p>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          No Quiz Available
+        </h2>
+        <p className="text-gray-700">
+          Please check back later or contact support.
+        </p>
       </motion.div>
     );
   }
@@ -117,7 +127,8 @@ function QandA({ data, QAdone, setQAdone }) {
             const selectedAnswer = selectedAnswers[currentIndex];
             const isSelected = selectedAnswer?.selected === key.toUpperCase();
             const isCorrect = selectedAnswer?.isCorrect;
-            const isCorrectOption = key.toUpperCase() === currentQuiz.correct_ans;
+            const isCorrectOption =
+              key.toUpperCase() === currentQuiz.correct_ans;
             const isDisabled = !!selectedAnswers[currentIndex];
 
             return (
@@ -138,13 +149,21 @@ function QandA({ data, QAdone, setQAdone }) {
                         : "bg-red-100 border-2 border-red-400"
                       : isDisabled && isCorrectOption
                       ? "bg-green-100 border-2 border-green-400"
-                      : "bg-white border border-gray-300 hover:border-blue-400"
+                      : "bg-white border border-gray-300 hover:border-purple-800"
                   } ${
-                    isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+                    isDisabled
+                      ? "cursor-not-allowed opacity-60"
+                      : "cursor-pointer"
                   }`}
-                  onClick={() => !isDisabled && handleCheckboxChange(key.toUpperCase())}
+                  onClick={() =>
+                    !isDisabled && handleCheckboxChange(key.toUpperCase())
+                  }
                 >
-                  <span className={`text-lg ${isSelected ? "font-semibold" : ""} text-left`}>
+                  <span
+                    className={`text-lg ${
+                      isSelected ? "font-semibold" : ""
+                    } text-left`}
+                  >
                     {answerText || "No option available"}
                   </span>
                   {isSelected && (
@@ -164,7 +183,7 @@ function QandA({ data, QAdone, setQAdone }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
+                      className=" p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
                     >
                       <p className="text-gray-700 text-left">{explanation}</p>
                     </motion.div>
@@ -191,7 +210,7 @@ function QandA({ data, QAdone, setQAdone }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleNext}
-          disabled={currentIndex === quiz.length - 1}
+          disabled={currentIndex === quiz.length - 1 && !QAdone}
           className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
         >
           Next

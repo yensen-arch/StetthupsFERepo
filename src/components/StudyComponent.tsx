@@ -285,7 +285,7 @@ function StudyComponent() {
           {error}
         </p>
       )}
-      <div className="w-screen max-w-3xl mx-auto space-y-6">
+      <div className="w-screen max-w-5xl mx-auto space-y-6">
         <AnimatePresence>
           {subscriptionData?.map((plan) => (
             <Card key={plan.id} className="bg-white overflow-hidden">

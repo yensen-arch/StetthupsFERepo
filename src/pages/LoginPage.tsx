@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SlidingCard from "../components/SlidingCard.tsx";
@@ -12,11 +14,12 @@ import { SignUp5 } from "../components/SignUp5.tsx";
 import TermsModal from "../components/TermsModal.js";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import LoginWithPhone from "../components/LoginWithPhone.jsx";
+import LoginWithPhone from "../components/LoginWithPhone.tsx";
 
 export default function LoginPage() {
   const [currentComponent, setCurrentComponent] = useState("login");
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [formData, setFormData] = useState({
     FirstName: "",
     LastName: "",
@@ -30,10 +33,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkMobileAndToken = () => {
-      const isMobile = window.innerWidth <= 768; // Assuming mobile breakpoint is 768px
+      const mobileWidth = window.innerWidth <= 1080;
+      setIsMobile(mobileWidth);
       const accessToken = localStorage.getItem("access_Token");
-      
-      if (isMobile && !accessToken) {
+
+      if (mobileWidth && !accessToken) {
         setShowTermsModal(true);
       } else {
         setShowTermsModal(false);
@@ -41,10 +45,10 @@ export default function LoginPage() {
     };
 
     checkMobileAndToken();
-    window.addEventListener('resize', checkMobileAndToken);
+    window.addEventListener("resize", checkMobileAndToken);
 
     return () => {
-      window.removeEventListener('resize', checkMobileAndToken);
+      window.removeEventListener("resize", checkMobileAndToken);
     };
   }, []);
 
@@ -73,7 +77,6 @@ export default function LoginPage() {
   };
 
   const handleSignUp3Next = () => {
-    console.log(formData);
     setCurrentComponent("signup4");
   };
 
@@ -85,15 +88,23 @@ export default function LoginPage() {
     <div className="flex min-h-screen overflow-hidden bg-gradient-to-r from-white to-purple-200">
       {showTermsModal && <TermsModal />}
       {/* Left Side */}
-      <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-center lg:items-center text-white">
-        <img
-          src={StetthupsLogo}
-          alt="Stethups Logo"
-          className="w-60 h-60 mb-8"
-        />
-        <img src={StetthUpsText} alt="Stetthups Text" className="w-60 mb-8" />
-        <SlidingCard />
-      </div>
+      {!isMobile && (
+        <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-center lg:items-center text-white">
+          <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-center lg:items-center text-white">
+            <img
+              src={StetthupsLogo}
+              alt="Stethups Logo"
+              className="w-60 h-60 mb-8"
+            />
+            <img
+              src={StetthUpsText}
+              alt="Stetthups Text"
+              className="w-60 mb-8"
+            />
+            <SlidingCard />
+          </div>{" "}
+        </div>
+      )}
       {/* Right Side */}
       <div className="flex items-center min-h-screen justify-center mx-auto">
         {currentComponent === "login" && (
@@ -140,4 +151,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

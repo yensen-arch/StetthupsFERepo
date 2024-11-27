@@ -66,7 +66,9 @@ function Settings() {
           <div className="flex items-center gap-3 p-4 rounded-lg bg-gray-50 shadow-sm transition-all hover:shadow-md">
             <FaUserCircle className="text-2xl text-purple-600" />
             <div>
-              <p className="text-sm font-medium text-gray-600">Name</p>
+              <p className="text-sm font-medium text-left text-gray-600">
+                Name
+              </p>
               <p className="text-lg font-bold">
                 {user.first_name} {user.last_name}
               </p>
@@ -76,7 +78,9 @@ function Settings() {
           <div className="flex items-center gap-3 p-4 rounded-lg bg-gray-50 shadow-sm transition-all hover:shadow-md">
             <FaEnvelope className="text-2xl text-blue-600" />
             <div>
-              <p className="text-sm font-medium text-gray-600">Email</p>
+              <p className="text-sm text-left font-medium text-gray-600">
+                Email
+              </p>
               <p className="text-lg font-bold">{user.email}</p>
             </div>
           </div>
@@ -84,7 +88,9 @@ function Settings() {
           <div className="flex items-center gap-3 p-4 rounded-lg bg-gray-50 shadow-sm transition-all hover:shadow-md">
             <FaPhone className="text-2xl text-green-600" />
             <div>
-              <p className="text-sm font-medium text-gray-600">Phone</p>
+              <p className="text-sm text-left font-medium text-gray-600">
+                Phone
+              </p>
               <p className="text-lg font-bold">{user.phone}</p>
             </div>
           </div>
@@ -92,7 +98,9 @@ function Settings() {
           <div className="flex items-center gap-3 p-4 rounded-lg bg-gray-50 shadow-sm transition-all hover:shadow-md">
             <FaBirthdayCake className="text-2xl text-red-600" />
             <div>
-              <p className="text-sm font-medium text-gray-600">Birth Date</p>
+              <p className="text-sm text-left font-medium text-gray-600">
+                Birth Date
+              </p>
               <p className="text-lg font-bold">{user.birth_date}</p>
             </div>
           </div>
@@ -100,7 +108,9 @@ function Settings() {
           <div className="flex items-center gap-3 p-4 rounded-lg bg-gray-50 shadow-sm transition-all hover:shadow-md">
             <AiOutlineFieldTime className="text-2xl text-indigo-600" />
             <div>
-              <p className="text-sm font-medium text-gray-600">Preparation</p>
+              <p className="text-sm text-left font-medium text-gray-600">
+                Preparation
+              </p>
               <p className="text-lg font-bold">{user.preparing_for}</p>
             </div>
           </div>
@@ -108,7 +118,7 @@ function Settings() {
 
         <button
           onClick={() => navigate("/forgot-password")}
-          className="mt-4 text-lg text-white p-2 rounded-lg font-bold bg-purple-600 hover:bg-purple-700 transition-colors duration-300"
+          className="mt-4 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300"
         >
           Change Password
         </button>

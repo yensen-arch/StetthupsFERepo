@@ -15,6 +15,13 @@ function StudyPage() {
   const [QAdone, setQAdone] = useState(false);
 
   useEffect(() => {
+    const handleNavigation = () => setActiveButton("Capsule");
+    window.addEventListener("navigateToCapsule", handleNavigation);
+    return () => {
+      window.removeEventListener("navigateToCapsule", handleNavigation);
+    };
+  }, []);
+  useEffect(() => {
     const fetchCaseData = async () => {
       const accessToken = localStorage.getItem("access_token");
       if (!accessToken || !caseId) {
@@ -84,11 +91,17 @@ function StudyPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar activeButton={activeButton} setActiveButton={setActiveButton} />
-
+      {/* <Sidebar activeButton={activeButton} setActiveButton={setActiveButton} /> */}
       <main className="flex-grow p-8">
+        {caseData && (
+          <h2 className="text-xl font-semibold text-left text-gray-800 mb-4">
+            {caseData.case_name}
+          </h2>
+        )}
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6 text-purple-800">Study Materials</h1>
+          <h1 className="text-3xl font-bold mb-6 text-purple-800">
+            Study Materials
+          </h1>
           <div className="bg-white rounded-lg shadow-md m-0 mb-6">
             {videoUrl ? (
               <VideoPlayer videoUrl={videoUrl} />
@@ -120,7 +133,7 @@ function StudyPage() {
             </nav>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-4">
+          <div>
             {activeButton === "Description" && caseData && (
               <Description description={caseData.case_description} />
             )}
@@ -141,4 +154,3 @@ function StudyPage() {
 }
 
 export default StudyPage;
-

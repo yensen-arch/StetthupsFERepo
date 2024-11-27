@@ -1,62 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "../assets/Girl.png";
 import Events from "./events.tsx";
 import Progress from "./Progress.tsx";
-const mockEvents = [
-  // your mock events here...
-];
 
 function DashComponent() {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
   const token = localStorage.getItem("access_token");
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const fetchStatistics = async () => {
-      try {
-        const response = await fetch(
-          "https://admin.stetthups.com/api/v1/get/statistics",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        console.log("stats", data.data); // Logs the content
-      } catch (error) {
-        console.error("Error fetching statistics:", error);
-      }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1400); // Update state based on screen width
     };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    fetchStatistics();
-  }, [token]);
+  
 
   return (
     <div className="flex-grow">
-      <div className="p-8">
+      <div>
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-[#4A0E78] to-[#6739B7] rounded-2xl p-8 mb-8 relative overflow-hidden">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="space-y-2 mb-4 md:mb-0">
-              <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+        <div
+          className={`rounded-2xl py-2 px-2 mb-8 relative overflow-hidden text-left
+            text-black md:px-8 md:bg-gradient-to-r md:from-[#4A0E78] md:to-[#6739B7] 
+            md:text-white transition-all duration-300`}
+        >
+          <div className="flex flex-col md:flex-row justify-between items-left">
+            {/* Responsive View */}
+            <h1 className="text-black text-3xl font-bold block md:hidden">
+              Welcome,{" "}
+              <span className="text-purple-900 font-bold">
+                Dr. {user?.first_name || "User"}
+              </span>
+            </h1>
+            {/* Desktop View */}
+            <div className="hidden md:space-y-2 md:mb-4 md:mb-0 md:block">
+              <h1
+                className={`text-3xl font-bold flex items-center gap-2
+      text-white md:flex-row md:justify-start`}
+              >
                 Welcome back, Dr. {user?.first_name || "User"}
                 <span role="img" aria-label="waving hand" className="text-6xl">
                   👋
                 </span>
               </h1>
-              <div className="text-white/90">
-                <p className="text-lg">
+              <div className={`text-white/90`}>
+                <p className="text-lg text-left">
                   You've learned <span className="font-semibold">70%</span> of
                   your goal this week!
                 </p>
-                <p className="text-sm mt-1">
+                <p className="text-sm mt-1 text-left">
                   Keep it up and improve your progress.
                 </p>
               </div>
             </div>
+
             <div className="hidden md:block">
               <img
                 src={Image}
@@ -67,16 +69,13 @@ function DashComponent() {
           </div>
         </div>
 
+        {/* Continue Learning Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full flex justify-end">
-          {/* Continue Learning Section */}
           <div className="col-span-full flex justify-end">
-            <Progress/>
-            <Events />
+            <Progress />
+            {!isMobile && <Events />}
           </div>
         </div>
-        
-
-        {/* Events Section */}
       </div>
     </div>
   );

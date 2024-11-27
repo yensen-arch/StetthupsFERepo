@@ -59,7 +59,7 @@ export default function Component() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white min-h-screen shadow-xl w-full max-w-md overflow-hidden ">
+      <div className="bg-white h-full shadow-xl w-screen  overflow-hidden ">
         <div className="relative mt-6">
           {currentIndex < features.length - 1 && (
             <button

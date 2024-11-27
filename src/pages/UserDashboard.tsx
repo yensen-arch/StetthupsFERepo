@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar.tsx";
 
 function UserDashboard() {
   // Set "Dashboard" as the default active button
-  const [activeButton, setActiveButton] = useState("Dashboard");
+  const [activeButton, setActiveButton] = useState();
 
   const renderActiveComponent = () => {
     switch (activeButton) {
@@ -26,9 +26,8 @@ function UserDashboard() {
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <Sidebar activeButton={activeButton} setActiveButton={setActiveButton} />
-
       {/* Main Content */}
-      <main className="flex-grow bg-gray-50 p-8">
+      <main className="flex-grow bg-gray-50 px-2 py-4">
         {renderActiveComponent()}
       </main>
     </div>
