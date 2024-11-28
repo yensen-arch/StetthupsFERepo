@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import FullLogo from "../assets/Fulllogo.png";
-import ChartSquareDark from "../assets/chart-square.png";
-import ChartSquareLight from "../assets/chart-square-light.png";
-import PlayCircleLight from "../assets/play-circle.png";
 import UnionDark from "../assets/UnionDark.png";
 import UnionLight from "../assets/Union.png";
-import PlayCircleDark from "../assets/play-circle-dark.png";
+import SettingsDark from "../assets/settings_dark.png";
+import SettingsLight from "../assets/settings_light.png";
+import StudyLight from "../assets/StudyLight.png";
+import StudyDark from "../assets/StudyDark.png";
+import StatsWhite from "../assets/StatsWhite.png";
+import StatsBlack from "../assets/StatsBlack.png";
 const Sidebar = ({ activeButton, setActiveButton }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -37,13 +39,13 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
 
   const buttonData = [
     { name: "Dashboard", darkIcon: UnionDark, lightIcon: UnionLight },
-    { name: "Study", darkIcon: PlayCircleDark, lightIcon: PlayCircleLight },
+    { name: "Study", darkIcon: StudyLight, lightIcon: StudyDark },
     {
       name: "Statistics",
-      darkIcon: ChartSquareDark,
-      lightIcon: ChartSquareLight,
+      darkIcon: StatsBlack,
+      lightIcon: StatsWhite,
     },
-    { name: "Settings", darkIcon: UnionDark, lightIcon: UnionLight },
+    { name: "Settings", darkIcon: SettingsLight, lightIcon: SettingsDark },
   ];
 
   const sidebarVariants = {

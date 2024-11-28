@@ -3,7 +3,7 @@ import Image from "../assets/Girl.png";
 import Events from "./events.tsx";
 import Progress from "./Progress.tsx";
 
-function DashComponent() {
+function DashComponent({ setActiveButton }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
   const token = localStorage.getItem("access_token");
@@ -72,7 +72,7 @@ function DashComponent() {
         {/* Continue Learning Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full flex justify-end">
           <div className="col-span-full flex justify-end">
-            <Progress />
+            <Progress setActiveButton={setActiveButton}/>
             {!isMobile && <Events />}
           </div>
         </div>

@@ -21,7 +21,7 @@ function UserDashboard() {
       case "Settings":
         return <Settings />;
       default:
-        return <DashComponent />;
+        return <DashComponent setActiveButton={setActiveButton}/>;
     }
   };
 

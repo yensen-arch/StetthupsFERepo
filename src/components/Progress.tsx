@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import BeautifulSpinner from "./BeautifulSpinner.tsx";
+import { sub } from "framer-motion/client";
+import { useNavigate } from "react-router-dom";
+
 
 interface Subject {
   id: number;
@@ -22,10 +25,10 @@ interface SubscriptionPlan {
   duration: number;
 }
 
-function Progress() {
-  const [subjectData, setSubjectData] = useState<{
-    [key: number]: SubjectData[];
-  }>({});
+// Global variable for subject data
+let subjectData: { [key: number]: SubjectData[] } = {};
+
+function Progress({setActiveButton} ) {
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>(
     []
   );
@@ -103,10 +106,9 @@ function Progress() {
 
       // Remove data at index 1 if other data exists
       if (otherDataExists && subjectDataMap[1]?.length > 0) {
-        console.log("Removing subject data at index 1...");
         delete subjectDataMap[1];
       }
-      setSubjectData(subjectDataMap);
+      subjectData = subjectDataMap; // Set global subjectData variable
     } catch (err) {
       console.error("Error fetching master data:", err);
     }
@@ -115,11 +117,10 @@ function Progress() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen w-2/3">
-        <BeautifulSpinner/>
+        <BeautifulSpinner />
       </div>
     );
   }
-  
 
   if (error) {
     return (
@@ -130,7 +131,7 @@ function Progress() {
   }
 
   return (
-    <div className="p-2">
+    <div className="">
       {(() => {
         const nonFreePlans = Object.entries(subjectData).filter(
           ([subscriptionId, subjects]) =>
@@ -145,9 +146,15 @@ function Progress() {
                 {subscriptionData.find((s) => s.id === parseInt(subscriptionId))
                   ?.subscription_name || "Unknown Subscription"}
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {subjects.slice(0, 12).map((subject) => (
-                  <SubjectCard key={subject.subject.id} subject={subject} />
+                  <SubjectCard
+                    key={subject.subject.id}
+                    subject={subject}
+                    subscriptionId={subscriptionId}
+                    subjectData={subjectData}
+                    setActiveButton={setActiveButton}
+                  />
                 ))}
               </div>
             </div>
@@ -161,9 +168,29 @@ function Progress() {
   );
 }
 
-function SubjectCard({ subject }: { subject: SubjectData }) {
+
+
+function SubjectCard({
+  subject,
+  subscriptionId,
+  subjectData,
+  setActiveButton,
+}: {
+  subject: SubjectData;
+  subscriptionId: string;
+  subjectData: { [key: number]: SubjectData[] };
+  setActiveButton: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const handleClick = () => {
+    setActiveButton("Study");
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-5 hover:shadow-xl transition-shadow duration-300">
+    <div
+      className="bg-white rounded-lg shadow-lg p-5 hover:shadow-xl transition-shadow duration-300"
+      onClick={handleClick}
+
+    >
       <div className="flex items-center mb-4">
         <img
           src={subject.subject.image_path}
