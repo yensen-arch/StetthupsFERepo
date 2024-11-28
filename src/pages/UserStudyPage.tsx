@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar.tsx";
 import VideoPlayer from "../components/VideoPlayer.tsx";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Description from "../components/Description.tsx";
 import QandA from "../components/QandA.tsx";
 import Capsule from "../components/Capsule.tsx";
+import { useLocation } from "react-router-dom";
 
 function StudyPage() {
   const [activeButton, setActiveButton] = useState("Description");
   const [videoUrl, setVideoUrl] = useState("");
   const [caseData, setCaseData] = useState(null);
   const [qaData, setQaData] = useState(null);
+  const [incompleteCases, setIncompleteCases] = useState([]);
+  const [currentSubjectName, setCurrentSubjectName] = useState("");
+  const [currentTopicName, setCurrentTopicName] = useState("");
   const { caseId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [QAdone, setQAdone] = useState(false);
+  const {
+    subjectName,
+    topicName,
+    incompleteCases: initialIncompleteCases,
+  } = location.state || {};
+
+  useEffect(() => {
+    setIncompleteCases(initialIncompleteCases || []);
+    setCurrentSubjectName(subjectName);
+    setCurrentTopicName(topicName);
+  }, [initialIncompleteCases, subjectName, topicName]);
 
   useEffect(() => {
     const handleNavigation = () => setActiveButton("Capsule");
@@ -21,6 +38,7 @@ function StudyPage() {
       window.removeEventListener("navigateToCapsule", handleNavigation);
     };
   }, []);
+
   useEffect(() => {
     const fetchCaseData = async () => {
       const accessToken = localStorage.getItem("access_token");
@@ -28,7 +46,7 @@ function StudyPage() {
         console.error("Missing access_token or caseId.");
         return;
       }
-
+      setActiveButton("Description");
       try {
         const response = await fetch(
           `https://admin.stetthups.com/api/v1/get/case/${caseId}`,
@@ -89,19 +107,111 @@ function StudyPage() {
     fetchQaData();
   }, [caseId]);
 
+  const handleNextCase = () => {
+    if (incompleteCases.length === 0) {
+      console.log("No more incomplete cases.");
+      return;
+    }
+
+    const nextCase = incompleteCases[0];
+    const updatedIncompleteCases = incompleteCases.slice(1);
+
+    setIncompleteCases(updatedIncompleteCases);
+    setCurrentSubjectName(nextCase.subjectName);
+    setCurrentTopicName(nextCase.topicName);
+
+    const fetchCaseData = async () => {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken || !nextCase.caseId) {
+        console.error("Missing access_token or caseId.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://admin.stetthups.com/api/v1/get/case/${nextCase.caseId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          setCaseData(result.data);
+          setVideoUrl(result.data.case_files);
+          setActiveButton("Description"); // Set active button to Description
+          setQAdone(false); // Reset QAdone state
+        } else {
+          console.error("Error fetching case data:", result.message);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      }
+    };
+
+    const fetchQaData = async () => {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken || !nextCase.caseId) {
+        console.error("Missing access_token or caseId.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://admin.stetthups.com/api/v1/get/quiz/case/${nextCase.caseId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          setQaData(result.data);
+        } else {
+          console.error("Error fetching QA data:", result.message);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      }
+    };
+
+    fetchCaseData();
+    fetchQaData();
+  };
+
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* <Sidebar activeButton={activeButton} setActiveButton={setActiveButton} /> */}
-      <main className="flex-grow p-8">
+      {isDesktop && (
+        <Sidebar
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
+        />
+      )}
+      <main className="flex-grow p-2">
         {caseData && (
           <h2 className="text-xl font-semibold text-left text-gray-800 mb-4">
-            {caseData.case_name}
+            {caseData.case_name} - {currentTopicName} - {currentSubjectName}
           </h2>
         )}
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6 text-purple-800">
-            Study Materials
-          </h1>
           <div className="bg-white rounded-lg shadow-md m-0 mb-6">
             {videoUrl ? (
               <VideoPlayer videoUrl={videoUrl} />
@@ -133,17 +243,18 @@ function StudyPage() {
             </nav>
           </div>
 
-          <div>
+          <div className="bg-white rounded-lg shadow-md">
             {activeButton === "Description" && caseData && (
               <Description description={caseData.case_description} />
             )}
             {activeButton === "Q&A" && qaData && (
               <QandA data={qaData} QAdone={QAdone} setQAdone={setQAdone} />
             )}
-            {activeButton === "Capsule" && caseData && (
+            {activeButton === "Capsule" && caseData && QAdone && (
               <Capsule
                 analysis={caseData.case_analysis}
                 file={caseData.case_analysis_files}
+                nextCase={handleNextCase}
               />
             )}
           </div>
@@ -154,3 +265,4 @@ function StudyPage() {
 }
 
 export default StudyPage;
+

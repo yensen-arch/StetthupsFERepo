@@ -1,18 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
-function Capsule({ analysis, file }) {
-  const [isImageOpen, setIsImageOpen] = useState(false);
-
-  const handleImageClick = () => {
-    setIsImageOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsImageOpen(false);
-  };
-
+function Capsule({ analysis, file, nextCase }) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6">
+    <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6 relative">
       {/* Heading */}
       <h2 className="text-3xl md:text-4xl font-extrabold text-purple-800 text-center">
         Case Analysis
@@ -25,43 +15,21 @@ function Capsule({ analysis, file }) {
       />
 
       {/* Image Section */}
-      <div className="relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+      <div className="relative overflow-hidden transition-shadow duration-300">
         <img
           src={file}
           alt="Case Analysis"
-          className="w-full h-auto cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
-          onClick={handleImageClick}
+          className="w-full h-auto cursor-pointer transition-transform duration-300 ease-in-out"
         />
       </div>
 
-      {/* Modal */}
-      {isImageOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
-          onClick={handleCloseModal}
-        >
-          {/* Modal Content */}
-          <div
-            className="relative max-w-4xl w-full max-h-screen overflow-y-auto bg-white p-4 rounded-lg shadow-lg"
-            onClick={(e) => e.stopPropagation()} // Prevent modal from closing on image click
-          >
-            {/* Close Button */}
-            <button
-              className="absolute top-3 right-3 bg-purple-800 text-white text-3xl rounded-full p-2 hover:bg-purple-700 transition"
-              onClick={handleCloseModal}
-            >
-              &times;
-            </button>
-
-            {/* Full Image */}
-            <img
-              src={file}
-              alt="Case Analysis Zoomed"
-              className="w-full max-h-[90vh] object-contain rounded-lg"
-            />
-          </div>
-        </div>
-      )}
+      {/* Next Case Button */}
+      <button
+        onClick={nextCase}
+        className="absolute bottom-6 right-6 bg-purple-800 text-white px-4 py-2 rounded-lg text-lg hover:bg-purple-700 transition duration-300 sm:static sm:mt-6 sm:ml-auto sm:block"
+      >
+        Next Case
+      </button>
     </div>
   );
 }

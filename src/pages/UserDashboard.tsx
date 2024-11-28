@@ -4,10 +4,13 @@ import StudyComponent from "../components/StudyComponent.tsx";
 import StatsComponent from "../components/StatsComponent.tsx";
 import Settings from "../components/Settings.tsx";
 import Sidebar from "../components/Sidebar.tsx";
+import { useLocation } from "react-router-dom";
+
 
 function UserDashboard() {
   // Set "Dashboard" as the default active button
-  const [activeButton, setActiveButton] = useState();
+  const location = useLocation();
+  const [activeButton, setActiveButton] = useState(location.state?.activeButton || "Dashboard");
 
   const renderActiveComponent = () => {
     switch (activeButton) {

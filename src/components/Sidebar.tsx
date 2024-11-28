@@ -9,7 +9,6 @@ import PlayCircleLight from "../assets/play-circle.png";
 import UnionDark from "../assets/UnionDark.png";
 import UnionLight from "../assets/Union.png";
 import PlayCircleDark from "../assets/play-circle-dark.png";
-
 const Sidebar = ({ activeButton, setActiveButton }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -24,10 +23,11 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
-    navigate("/"); // Navigate to the dashboard
-  };
+  const handleButtonClick =  (buttonName) => {
+     setActiveButton(buttonName);
+     navigate("/", { state: { activeButton: buttonName } }); // Pass activeButton via state
+    };
+  
 
   const toggleSidebar = () => {
     if (!isMobile) {
@@ -143,7 +143,7 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
                 <img
                   src={FullLogo}
                   alt="Stethups Logo"
-                  className="w-full max-w-[240px] h-20 mb-8 pt-6"
+                  className="w-full max-w-[240px] h-18 mb-8 pt-6"
                 />
               </motion.div>
             )}

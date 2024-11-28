@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
+import BeautifulSpinner from "./BeautifulSpinner.tsx";
 
 interface Subject {
   id: number;
@@ -114,11 +114,12 @@ function Progress() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-xl font-semibold">Loading...</div>
+      <div className="flex items-center justify-center h-screen w-2/3">
+        <BeautifulSpinner/>
       </div>
     );
   }
+  
 
   if (error) {
     return (

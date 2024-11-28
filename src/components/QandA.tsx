@@ -50,9 +50,6 @@ function QandA({ data, QAdone, setQAdone }) {
           }
           throw new Error("Failed to submit results");
         })
-        .then((data) => {
-          console.log("Result submitted successfully:", data);
-        })
         .catch((error) => {
           console.error("Error submitting results:", error);
         });
@@ -60,7 +57,6 @@ function QandA({ data, QAdone, setQAdone }) {
   }, [selectedAnswers, quiz, setQAdone, caseId, userID, accessToken]);
 
   const handleCheckboxChange = (optionKey) => {
-    if (selectedAnswers[currentIndex]) return;
     const isCorrect = optionKey === currentQuiz.correct_ans;
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -72,6 +68,7 @@ function QandA({ data, QAdone, setQAdone }) {
   };
 
   const handleNext = () => {
+    if (!selectedAnswers[currentIndex]) return; // Prevent navigating if current question is unanswered
     if (currentIndex < quiz.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (QAdone) {
@@ -185,7 +182,7 @@ function QandA({ data, QAdone, setQAdone }) {
                       transition={{ duration: 0.3 }}
                       className=" p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
                     >
-                      <p className="text-gray-700 text-left">{explanation}</p>
+                      <p className="text-gray-700 text-lg text-left">{explanation}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -210,8 +207,10 @@ function QandA({ data, QAdone, setQAdone }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleNext}
-          disabled={currentIndex === quiz.length - 1 && !QAdone}
-          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
+          disabled={
+            !selectedAnswers[currentIndex] || 
+            (currentIndex === quiz.length - 1 && !QAdone)
+          }          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
         >
           Next
           <ChevronRight className="w-5 h-5 ml-2" />
