@@ -45,26 +45,25 @@ function LoginWithPhone({ onNext }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (showOtpInput) {
-      verifyOtp(); // Verify OTP if the input is visible
+      verifyOtp();
     } else {
-      sendOtp(phone); // Send OTP if the input is not visible
+      sendOtp(phone);
     }
   };
 
   return (
-    <div className="w-[450px] h-auto max-w-md bg-white rounded-3xl shadow-xl px-12 py-6">
-      <h2 className="text-3xl font-bold text-[#4E46B4] mb-4 text-center">
+    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl px-4 sm:px-8 md:px-12 py-6">
+      <h2 className="text-2xl sm:text-3xl font-bold text-[#4E46B4] mb-2 sm:mb-4 text-center">
         Login
       </h2>
-      <h3 className="font-semibold text-gray-800 mb-8 text-center">
+      <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-6 sm:mb-8 text-center">
         Sign in to your account
       </h3>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div className="flex items-center">
-          <span className="w-[20%] text-gray-500 pl-4 pr-1 py-2 bg-slate-100 rounded-r-none rounded-md focus:outline-none rounded-r-none flex items-center">
-            <FaMobileAlt className="mr-2" />
+          <span className="w-1/4 sm:w-1/5 text-gray-500 pl-2 sm:pl-4 pr-1 py-2 bg-slate-100 rounded-l-md focus:outline-none flex items-center justify-center text-sm sm:text-base">
+            <FaMobileAlt className="mr-1 sm:mr-2" />
             +91
           </span>
           <input
@@ -73,11 +72,10 @@ function LoginWithPhone({ onNext }) {
             onChange={(e) => setPhone(e.target.value)}
             name="PhoneNumber"
             value={phone}
-            className="w-[80%] pl-3 placeholder:text-gray-500 py-2 rounded-l-none bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
+            className="w-3/4 sm:w-4/5 pl-3 placeholder:text-gray-500 py-2 rounded-r-md bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
           />
         </div>
 
-        {/* OTP Input */}
         {showOtpInput && (
           <div
             className="transition-all duration-500 ease-in-out opacity-0 translate-y-4"
@@ -92,25 +90,25 @@ function LoginWithPhone({ onNext }) {
               onChange={(e) => setOtp(e.target.value)}
               value={otp}
               maxLength={6}
-              className="w-full placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
+              className="w-full placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
             />
           </div>
         )}
 
         <button
           type="submit"
-          className="w-full bg-[#4E46B4] text-white py-2 px-4 rounded-md hover:bg-[#3D3691] transition duration-300"
+          className="w-full bg-[#4E46B4] text-white py-2 px-4 rounded-md hover:bg-[#3D3691] transition duration-300 text-sm sm:text-base"
         >
           {showOtpInput ? "Verify OTP" : "Send OTP"}
         </button>
       </form>
 
-      <p className="text-center text-sm text-purple-700 pt-4">
+      <p className="text-center text-xs sm:text-sm text-purple-700 pt-4 sm:pt-6">
         <button onClick={onNext} className="hover:underline">
           Login through <b>Email</b>
         </button>
       </p>
-      <p className="mt-8 text-center text-sm text-gray-600">
+      <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-gray-600">
         Don't have an account?{" "}
         <button
           className="font-medium text-[#4E46B4] hover:underline"
@@ -124,3 +122,4 @@ function LoginWithPhone({ onNext }) {
 }
 
 export default LoginWithPhone;
+

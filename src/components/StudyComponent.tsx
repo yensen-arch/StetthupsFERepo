@@ -328,7 +328,7 @@ function StudyComponent() {
     );
   }
   return (
-    <div className="p-4 md:p-6 bg-gray-50 min-h-screen  ">
+    <div className="p-0 md:p-6 bg-gray-50 min-h-screen  ">
       {error && (
         <p className="text-red-500 mb-6 text-center rounded-lg bg-red-50 p-4">
           {error}

@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 
 interface College {
@@ -10,10 +10,29 @@ interface College {
   updated_at: string;
 }
 
+interface City {
+  id: number;
+  city_name: string;
+}
+
+interface State {
+  id: number;
+  state_name: string;
+  cities: City[];
+}
+
 export function SignUp2({ onNext, onBack, onInputChange, formData }) {
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
+  const [states, setStates] = useState<State[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
   const [colleges, setColleges] = useState<College[]>([]);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const dropdownRefs = {
+    State: useRef<HTMLDivElement>(null),
+    City: useRef<HTMLDivElement>(null),
+    CollegeName: useRef<HTMLDivElement>(null),
+    CurrentYear: useRef<HTMLDivElement>(null),
+  };
 
   useEffect(() => {
     const fetchStates = async () => {
@@ -52,41 +71,102 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
     }
   }, [formData.State, states]);
 
-  const handleStateChange = (e) => {
-    const value = e.target.value;
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdown) {
+        const dropdownRef = dropdownRefs[openDropdown];
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
+          setOpenDropdown(null);
+        }
+      }
+    };
 
-    // Update state and cities
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
+
+  const handleStateChange = (value: string) => {
     const selected = states.find((state) => state.id === parseInt(value));
     setCities(selected ? selected.cities : []);
-
-    // Update parent formData
     onInputChange({ State: value, City: "" });
+    setOpenDropdown(null);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (name: string, value: string) => {
     if (name === "City") {
-      const selectedCity = cities.find(city => city.id === parseInt(value));
+      const selectedCity = cities.find((city) => city.id === parseInt(value));
       onInputChange({ [name]: selectedCity ? selectedCity.id.toString() : "" });
     } else if (name === "CollegeName") {
-      const selectedCollege = colleges.find(college => college.id === parseInt(value));
-      onInputChange({ [name]: selectedCollege ? selectedCollege.id.toString() : "" });
+      const selectedCollege = colleges.find(
+        (college) => college.id === parseInt(value)
+      );
+      onInputChange({
+        [name]: selectedCollege ? selectedCollege.id.toString() : "",
+      });
     } else {
       onInputChange({ [name]: value });
     }
+    setOpenDropdown(null);
   };
 
   const isFormValid = () => {
-    const stateValue = document.querySelector('select[name="State"]')?.value;
-    const cityValue = document.querySelector('select[name="City"]')?.value;
-    const collegeNameValue = document.querySelector(
-      'select[name="CollegeName"]'
-    )?.value;
-    const currentYearValue = document.querySelector(
-      'select[name="CurrentYear"]'
-    )?.value;
+    return (
+      formData.State &&
+      formData.City &&
+      formData.CollegeName &&
+      formData.CurrentYear
+    );
+  };
 
-    return stateValue && cityValue && collegeNameValue && currentYearValue;
+  const CustomDropdown = ({ name, options, value, onChange }) => {
+    const isOpen = openDropdown === name;
+    const toggleDropdown = () => setOpenDropdown(isOpen ? null : name);
+
+    return (
+      <div ref={dropdownRefs[name]} className="relative w-full">
+        <button
+          type="button"
+          onClick={toggleDropdown}
+          className="w-full text-left text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] transition duration-300"
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+        >
+          {value
+            ? options.find((opt) => opt.id.toString() === value)?.name ||
+              "Select"
+            : `Select ${name}`}
+        </button>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.ul
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute z-30 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto bottom-full mb-1"
+              role="listbox"
+            >
+              {options.map((option) => (
+                <li
+                  key={option.id}
+                  onClick={() => onChange(option.id.toString())}
+                  className="px-3 py-2 cursor-pointer hover:bg-slate-100 transition duration-300"
+                  role="option"
+                  aria-selected={value === option.id.toString()}
+                >
+                  {option.name}
+                </li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      </div>
+    );
   };
 
   return (
@@ -94,7 +174,7 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "-100%", opacity: 0 }}
-      className="w-[450px] h-auto max-w-md bg-white rounded-3xl shadow-xl px-12 py-6 space-y-6"
+      className="w-6/7 h-auto max-w-md bg-white rounded-3xl shadow-xl px-4 md:px-12 py-6 space-y-6"
     >
       <h2 className="text-3xl font-bold text-[#4E46B4] mb-4 text-center">
         Sign Up
@@ -103,59 +183,48 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
         Let's get you setup for success
       </h3>
       <div className="space-y-4">
-        <select
-          value={formData.State}
+        <CustomDropdown
           name="State"
-          onChange={handleStateChange}
-          className="w-full text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
-        >
-          <option value="">Select State</option>
-          {states.map((state) => (
-            <option key={state.id} value={state.id}>
-              {state.state_name}
-            </option>
-          ))}
-        </select>
-        <select
+          options={states.map((state) => ({
+            id: state.id,
+            name: state.state_name,
+          }))}
+          value={formData.State}
+          onChange={(value) => handleStateChange(value)}
+        />
+        <CustomDropdown
           name="City"
+          options={cities.map((city) => ({
+            id: city.id,
+            name: city.city_name,
+          }))}
           value={formData.City}
-          onChange={handleInputChange}
-          className="w-full text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
-        >
-          <option value="">Select City</option>
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.city_name}
-            </option>
-          ))}
-        </select>
-        <select
-          name="CollegeName"
-          value={formData.CollegeName}
-          onChange={handleInputChange}
-          className="w-full text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
-        >
-          <option value="">Select College</option>
-          {colleges.map((college) => (
-            <option key={college.id} value={college.id}>
-              {college.college_name}
-            </option>
-          ))}
-        </select>
-        <select
-          name="CurrentYear"
-          value={formData.CurrentYear}
-          onChange={handleInputChange}
-          className="w-full text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
-        >
-          <option value="">Select Current Year</option>
-          <option value="1st year">1st year</option>
-          <option value="2nd year">2nd year</option>
-          <option value="3rd year">3rd year</option>
-          <option value="Final Year">Final Year</option>
-          <option value="Intern">Intern</option>
-          <option value="Post Intern">Post Intern</option>
-        </select>
+          onChange={(value) => handleInputChange("City", value)}
+        />
+        <div className="relative z-20 space-y-4">
+          <CustomDropdown
+            name="CollegeName"
+            options={colleges.map((college) => ({
+              id: college.id,
+              name: college.college_name,
+            }))}
+            value={formData.CollegeName}
+            onChange={(value) => handleInputChange("CollegeName", value)}
+          />
+          <CustomDropdown
+            name="CurrentYear"
+            options={[
+              { id: "1st year", name: "1st year" },
+              { id: "2nd year", name: "2nd year" },
+              { id: "3rd year", name: "3rd year" },
+              { id: "Final Year", name: "Final Year" },
+              { id: "Intern", name: "Intern" },
+              { id: "Post Intern", name: "Post Intern" },
+            ]}
+            value={formData.CurrentYear}
+            onChange={(value) => handleInputChange("CurrentYear", value)}
+          />
+        </div>
       </div>
       <div className="flex gap-4">
         <button
@@ -175,4 +244,3 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
     </motion.div>
   );
 }
-

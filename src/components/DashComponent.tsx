@@ -18,25 +18,26 @@ function DashComponent({ setActiveButton }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  
-
   return (
     <div className="flex-grow">
       <div>
         {/* Welcome Banner */}
         <div
-          className={`rounded-2xl py-2 px-2 mb-8 relative overflow-hidden text-left
+          className={`rounded-2xl py-1  mb-8 relative overflow-hidden text-left
             text-black md:px-8 md:bg-gradient-to-r md:from-[#4A0E78] md:to-[#6739B7] 
             md:text-white transition-all duration-300`}
         >
           <div className="flex flex-col md:flex-row justify-between items-left">
             {/* Responsive View */}
-            <h1 className="text-black text-3xl font-bold block md:hidden">
-              Welcome,{" "}
-              <span className="text-purple-900 font-bold">
-                Dr. {user?.first_name || "User"}
-              </span>
-            </h1>
+            <div className="bg-purple-800 rounded-lg block md:hidden py-4 px-1">
+              <h1 className="text-white text-3xl font-bold  ">
+                Welcome,{" "}
+                <span className="text-white font-bold">
+                  Dr. {user?.first_name || "User"}
+                </span>
+              </h1>
+            </div>
+
             {/* Desktop View */}
             <div className="hidden md:space-y-2 md:mb-4 md:mb-0 md:block">
               <h1
@@ -72,7 +73,7 @@ function DashComponent({ setActiveButton }) {
         {/* Continue Learning Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full flex justify-end">
           <div className="col-span-full flex justify-end">
-            <Progress setActiveButton={setActiveButton}/>
+            <Progress setActiveButton={setActiveButton} />
             {!isMobile && <Events />}
           </div>
         </div>
