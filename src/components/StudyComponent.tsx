@@ -141,7 +141,7 @@ function StudyComponent() {
       try {
         const incompleteCases = [];
         let foundInputCase = false; // Tracks whether the input case ID has been found
-  
+
         // Traverse the dataset
         Object.values(subjectData).forEach((subjectArray) => {
           subjectArray.forEach((subjectObj) => {
@@ -163,7 +163,7 @@ function StudyComponent() {
             });
           });
         });
-  
+
         resolve(incompleteCases); // Return the list of incomplete cases with details
       } catch (error) {
         reject(error);
@@ -301,7 +301,7 @@ function StudyComponent() {
       [planId]: {},
     }));
   };
-// console.log(subjectData)
+  // console.log(subjectData)
   const handleTopicSelect = (
     planId: number,
     subjectId: number,
@@ -328,14 +328,14 @@ function StudyComponent() {
     );
   }
   return (
-    <div className="p-0 md:p-6 bg-gray-50 min-h-screen  ">
+    <div className=" md:p-6 bg-gray-50 min-h-screen  ">
       {error && (
         <p className="text-red-500 mb-6 text-center rounded-lg bg-red-50 p-4">
           {error}
         </p>
       )}
       <div className=" mx-auto space-y-6 p-4 sm:p-6 lg:p-8 flex justify-between">
-        <div className="flex-1 w-[70%] max-w-5xl mx-auto space-y-6 p-4 sm:p-6 lg:p-8">
+        <div className="flex-1 w-[70%] max-w-5xl mx-auto space-y-6 sm:p-6 lg:p-8">
           <AnimatePresence>
             {subscriptionData?.map((plan) => (
               <Card key={plan.id} className="bg-white overflow-hidden">
