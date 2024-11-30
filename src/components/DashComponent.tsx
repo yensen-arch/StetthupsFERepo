@@ -23,14 +23,14 @@ function DashComponent({ setActiveButton }) {
       <div>
         {/* Welcome Banner */}
         <div
-          className={`rounded-2xl py-1  mb-8 relative overflow-hidden text-left
+          className={`rounded-2xl py-1 mb-8 relative overflow-hidden text-left
             text-black md:px-8 md:bg-gradient-to-r md:from-[#4A0E78] md:to-[#6739B7] 
             md:text-white transition-all duration-300`}
         >
           <div className="flex flex-col md:flex-row justify-between items-left">
             {/* Responsive View */}
             <div className="bg-purple-800 rounded-lg block md:hidden py-4 px-1">
-              <h1 className="text-white text-3xl font-bold  ">
+              <h1 className="text-white text-3xl font-bold">
                 Welcome,{" "}
                 <span className="text-white font-bold">
                   Dr. {user?.first_name || "User"}
@@ -71,11 +71,15 @@ function DashComponent({ setActiveButton }) {
         </div>
 
         {/* Continue Learning Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full flex justify-end">
-          <div className="col-span-full flex justify-end">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
             <Progress setActiveButton={setActiveButton} />
-            {!isMobile && <Events />}
           </div>
+          {!isMobile && (
+            <div className="md:col-span-1">
+              <Events />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -83,3 +87,4 @@ function DashComponent({ setActiveButton }) {
 }
 
 export default DashComponent;
+
