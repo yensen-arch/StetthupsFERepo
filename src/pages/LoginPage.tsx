@@ -90,19 +90,19 @@ export default function LoginPage() {
       {/* Left Side */}
       {!isMobile && (
         <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-center lg:items-center text-white">
-          <div className="hidden w-1/2 lg:flex lg:flex-col lg:justify-center lg:items-center text-white">
+          <div className="flex flex-col items-center mb-8">
             <img
               src={StetthupsLogo}
               alt="Stethups Logo"
-              className="w-60 h-60 mb-8"
+              className="w-60 h-60 mb-4"
             />
             <img
               src={StetthUpsText}
               alt="Stetthups Text"
               className="w-60 mb-8"
             />
-            <SlidingCard />
-          </div>{" "}
+          </div>
+          <SlidingCard />
         </div>
       )}
       {/* Right Side */}
@@ -151,3 +151,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
