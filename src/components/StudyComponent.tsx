@@ -334,7 +334,7 @@ function StudyComponent() {
           {error}
         </p>
       )}
-      <div className=" mx-auto space-y-6 p-4 sm:p-6 lg:p-8 flex justify-between">
+      <div className=" mx-auto space-y-6 p-4 mb-12 sm:p-6 lg:p-8 flex justify-between">
         <div className="flex-1 w-[70%] max-w-5xl mx-auto space-y-6 sm:p-6 lg:p-8">
           <AnimatePresence>
             {subscriptionData?.map((plan) => (
@@ -343,7 +343,18 @@ function StudyComponent() {
                   <div className="w-full h-auto p-4 md:p-6 flex items-center justify-between bg-white hover:bg-gray-50">
                     <Button
                       className="flex-grow text-left"
-                      onClick={() => handlePlanSelect(plan.id)}
+                      onClick={() => {
+                        if (
+                          subjectData[plan.id] &&
+                          subjectData[plan.id].length > 0
+                        ) {
+                          handlePlanSelect(plan.id);
+                        }
+                      }}
+                      disabled={
+                        !subjectData[plan.id] ||
+                        subjectData[plan.id].length === 0
+                      }
                     >
                       <div className="flex flex-col items-start">
                         <h3 className="text-lg md:text-xl text-gray-900 mb-2">
