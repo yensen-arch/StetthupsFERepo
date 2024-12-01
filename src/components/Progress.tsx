@@ -116,7 +116,7 @@ function Progress({setActiveButton} ) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen w-3/3">
+      <div className="flex items-center overflow-hidden justify-center h-screen w-3/3">
         <BeautifulSpinner />
       </div>
     );

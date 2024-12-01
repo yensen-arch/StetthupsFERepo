@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const BeautifulSpinner = () => {
   return (
-    <div className="flex items-center justify-center h-screen w-screen bg-gray-50">
+    <div className="flex items-center justify-center bg-gray-50">
       <motion.svg
         width="100"
         height="100"
@@ -27,9 +27,9 @@ const BeautifulSpinner = () => {
               rotate: 360,
               transition: {
                 pathLength: { duration: 2, repeat: Infinity },
-                rotate: { duration: 2, repeat: Infinity, ease: "linear" }
-              }
-            }
+                rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+              },
+            },
           }}
         />
         <motion.circle
@@ -41,8 +41,8 @@ const BeautifulSpinner = () => {
             hidden: { scale: 0 },
             visible: {
               scale: [0, 1, 0],
-              transition: { duration: 1, repeat: Infinity, repeatDelay: 0.5 }
-            }
+              transition: { duration: 1, repeat: Infinity, repeatDelay: 0.5 },
+            },
           }}
         />
       </motion.svg>
@@ -51,4 +51,3 @@ const BeautifulSpinner = () => {
 };
 
 export default BeautifulSpinner;
-

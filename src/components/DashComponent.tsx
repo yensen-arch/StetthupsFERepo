@@ -17,7 +17,6 @@ function DashComponent({ setActiveButton }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  console.log(isMobile) 
 
   return (
     <div className="flex-grow">
