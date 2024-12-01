@@ -316,9 +316,24 @@ function StudyComponent() {
     }));
   };
   const handleBuyPlan = (planId: number) => {
-    // Implement buy plan functionality
     console.log(`Buying plan ${planId}`);
+  
+    // Define the plan links
+    const planLinks: { [key: number]: string } = {
+      2: "https://stetthups.com/neet-pg-course/",
+      3: "https://stetthups.com/usmle/",
+      4: "https://stetthups.com/fmge/",
+      5: "https://stetthups.com/plab/",
+    };
+  
+    // Check if the planId exists in the links
+    if (planLinks[planId]) {
+      window.location.href = planLinks[planId];
+    } else {
+      console.error("Invalid plan ID");
+    }
   };
+  
 
   if (loading) {
     return (
