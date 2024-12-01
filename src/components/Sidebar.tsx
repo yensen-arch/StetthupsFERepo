@@ -190,13 +190,12 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
               `}
             >
               <img
-                src={
-                  isMobile
-                    ? button.lightIcon
-                    : activeButton === button.name
-                    ? button.lightIcon
-                    : button.darkIcon
-                }
+               src={
+                activeButton === button.name
+                  ? button.lightIcon 
+                  : button.darkIcon  
+              }
+              
                 alt={`${button.name} icon`}
                 className={`
                   ${isMobile ? "w-6 h-6" : "w-7 h-7"} 

@@ -63,8 +63,10 @@ function StudyPage() {
         const result = await response.json();
 
         if (response.ok && result.success) {
+          
           setCaseData(result.data);
           setVideoUrl(result.data.case_files);
+          
         } else {
           console.error("Error fetching case data:", result.message);
         }
@@ -96,6 +98,7 @@ function StudyPage() {
 
         if (response.ok && result.success) {
           setQaData(result.data);
+          
         } else {
           console.error("Error fetching QA data:", result.message);
         }
@@ -147,6 +150,8 @@ function StudyPage() {
           setVideoUrl(result.data.case_files);
           setActiveButton("Description"); // Set active button to Description
           setQAdone(false); // Reset QAdone state
+          window.scrollTo({ top: 0, behavior: "smooth" }); // Add this line to scroll to top
+
         } else {
           console.error("Error fetching case data:", result.message);
         }

@@ -6,11 +6,11 @@ import { motion } from 'framer-motion';
 function StatsComponent() {
   const token = localStorage.getItem("access_token");
   const [stats, setStats] = useState({
-    percentageCorrect: 26.09,
-    percentageIncorrect: 73.91,
-    totalCorrect: 12,
-    totalIncorrect: 34,
-    totalQuestions: 46,
+    percentageCorrect: "",
+    percentageIncorrect: "",
+    totalCorrect: "",
+    totalIncorrect: "",
+    totalQuestions: "",
   });
 
   useEffect(() => {
