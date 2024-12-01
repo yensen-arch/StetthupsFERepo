@@ -142,7 +142,7 @@ function Progress({setActiveButton} ) {
           // Render only non-free plans
           return nonFreePlans.map(([subscriptionId, subjects]) => (
             <div key={subscriptionId} className="mb-12">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-left">
+              <h3 className=" font-semibold text-gray-800 mb-6 text-left">
                 {subscriptionData.find((s) => s.id === parseInt(subscriptionId))
                   ?.subscription_name || "Unknown Subscription"}
               </h3>
@@ -187,15 +187,15 @@ function SubjectCard({
 
   return (
     <div
-      className="bg-white rounded-lg shadow-lg p-5 hover:shadow-xl transition-shadow duration-300"
+      className="bg-white rounded-lg shadow-lg py-5 px-2 hover:shadow-2xl transition-shadow duration-300"
       onClick={handleClick}
 
     >
-      <div className="flex items-center mb-4">
+      <div className="flex items-left mb-4">
         <img
           src={subject.subject.image_path}
           alt={subject.subject.subject_name}
-          className="w-14 h-14 rounded-full mr-2"
+          className="w-14 h-14 rounded-full mr-1"
         />
         <h4 className="text-lg font-semibold text-gray-900">
           {subject.subject.subject_name}

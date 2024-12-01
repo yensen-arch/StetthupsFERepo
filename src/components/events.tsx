@@ -19,8 +19,10 @@ export default function Events() {
   ];
 
   return (
-    <div className="w-full max-w-md p-4 font-sans">
-      <h2 className="text-2xl font-semibold text-purple-700 mb-4 text-left">Events</h2>
+    <div className="w-full max-w-md pl-2 font-sans ml-auto">
+      <h2 className="text-2xl font-semibold text-purple-700 mb-4 text-left">
+        Events
+      </h2>
       {events.map((event, index) => (
         <div
           key={index}
@@ -28,7 +30,9 @@ export default function Events() {
         >
           <div className="p-4">
             <h3 className="text-lg font-medium text-left">{event.title}</h3>
-            <p className="text-sm text-gray-500 text-left">Hosted by {event.host}</p>
+            <p className="text-sm text-gray-500 text-left">
+              Hosted by {event.host}
+            </p>
             <div className="mt-4 text-left">
               <p className="font-medium mb-2">Meeting Attending</p>
               <div className="flex -space-x-2 overflow-hidden">

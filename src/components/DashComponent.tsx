@@ -11,7 +11,7 @@ function DashComponent({ setActiveButton }) {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1400); // Update state based on screen width
+      setIsMobile(window.innerWidth <= 1080); // Update state based on screen width
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -71,12 +71,12 @@ function DashComponent({ setActiveButton }) {
         </div>
 
         {/* Continue Learning Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
+        <div className="flex w-full gap-0">
+          <div className="flex-grow">
             <Progress setActiveButton={setActiveButton} />
           </div>
           {!isMobile && (
-            <div className="md:col-span-1">
+            <div className="w-[500px]">
               <Events />
             </div>
           )}
@@ -87,4 +87,3 @@ function DashComponent({ setActiveButton }) {
 }
 
 export default DashComponent;
-
