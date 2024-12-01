@@ -6,7 +6,6 @@ import Progress from "./Progress.tsx";
 function DashComponent({ setActiveButton }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const token = localStorage.getItem("access_token");
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

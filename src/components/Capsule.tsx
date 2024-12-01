@@ -5,7 +5,7 @@ function Capsule({ analysis, file, nextCase }) {
     <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6 relative">
       {/* Heading */}
       <h2 className="text-3xl md:text-4xl font-extrabold text-purple-800 text-center">
-        Case Analysis
+        CAPSULE
       </h2>
 
       {/* Analysis Content */}

@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 
 function StudyPage() {
   const [activeButton, setActiveButton] = useState("Description");
+  const [sidebarActive, setSidebarActive] = useState("Study");
   const [videoUrl, setVideoUrl] = useState("");
   const [caseData, setCaseData] = useState(null);
   const [qaData, setQaData] = useState(null);
@@ -201,11 +202,11 @@ function StudyPage() {
     <div className="flex min-h-screen bg-gray-100">
       {isDesktop && (
         <Sidebar
-          activeButton={activeButton}
-          setActiveButton={setActiveButton}
+          activeButton={sidebarActive}
+          setActiveButton={setSidebarActive}
         />
       )}
-      <main className="flex-grow p-2">
+      <main className="flex-grow p-6">
         {caseData && (
           <h2 className="text-xl font-semibold text-left text-gray-800 mb-4">
             {caseData.case_name} - {currentTopicName} - {currentSubjectName}
@@ -245,7 +246,7 @@ function StudyPage() {
 
           <div className="bg-white rounded-lg shadow-md">
             {activeButton === "Description" && caseData && (
-              <Description description={caseData.case_description} />
+              <Description description={caseData.case_description}  setActiveButton={setActiveButton}   />
             )}
             {activeButton === "Q&A" && qaData && (
               <QandA data={qaData} QAdone={QAdone} setQAdone={setQAdone} />

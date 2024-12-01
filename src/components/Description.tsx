@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
-const Description = ({ description }) => {
+const Description = ({ description, setActiveButton }) => {
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
 
   const handleImageClick = (imageSrc) => {
     setEnlargedImage(imageSrc);
     setIsZoomed(false);
+  };
+
+  const handleDescNext = () => {
+    setActiveButton("Q&A"); // Switch to Q&A
   };
 
   const closeEnlargedImage = () => {
@@ -45,6 +49,14 @@ const Description = ({ description }) => {
             )}
           </div>
         ))}
+        <div className="pb-4">
+          <button
+            onClick={handleDescNext}
+            className="absolute bottom-6 right-6 bg-purple-800 text-white px-8 py-2 rounded-lg text-lg hover:bg-purple-700 transition duration-300 sm:static sm:mt-6 sm:ml-auto sm:block"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {enlargedImage && (
