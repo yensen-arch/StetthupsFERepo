@@ -49,11 +49,11 @@ const Description = ({ description, setActiveButton }) => {
             )}
           </div>
         ))}
-        <div className="pb-4">
+        <div className="pb-4 mx-auto relative sm:static">
           <button
             onClick={handleDescNext}
-            className="absolute bottom-6 right-6 bg-purple-800 text-white px-8 py-2 rounded-lg text-lg hover:bg-purple-700 transition duration-300 sm:static sm:mt-6 sm:ml-auto sm:block"
-          >
+            className="absolute bottom-0 right-6 bg-purple-800 text-white px-8 py-2 rounded-lg text-lg hover:bg-purple-700 transition duration-300 sm:static sm:mt-6 sm:ml-auto sm:block"
+            >
             Next
           </button>
         </div>

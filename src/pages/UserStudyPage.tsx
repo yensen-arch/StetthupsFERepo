@@ -63,10 +63,8 @@ function StudyPage() {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          
           setCaseData(result.data);
           setVideoUrl(result.data.case_files);
-          
         } else {
           console.error("Error fetching case data:", result.message);
         }
@@ -98,7 +96,6 @@ function StudyPage() {
 
         if (response.ok && result.success) {
           setQaData(result.data);
-          
         } else {
           console.error("Error fetching QA data:", result.message);
         }
@@ -151,7 +148,6 @@ function StudyPage() {
           setActiveButton("Description"); // Set active button to Description
           setQAdone(false); // Reset QAdone state
           window.scrollTo({ top: 0, behavior: "smooth" }); // Add this line to scroll to top
-
         } else {
           console.error("Error fetching case data:", result.message);
         }
@@ -205,12 +201,16 @@ function StudyPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {isDesktop && (
-        <Sidebar
-          activeButton={sidebarActive}
-          setActiveButton={setSidebarActive}
-        />
-      )}
+      <div className="z-50">
+        {" "}
+        {isDesktop || activeButton === "Capsule" ? (
+          <Sidebar
+            activeButton={sidebarActive}
+            setActiveButton={setSidebarActive}
+          />
+        ) : null}
+      </div>
+
       <main className="flex-grow p-6">
         {caseData && (
           <h2 className="text-xl font-semibold text-left text-gray-800 mb-4">
@@ -251,7 +251,10 @@ function StudyPage() {
 
           <div className="bg-white rounded-lg shadow-md">
             {activeButton === "Description" && caseData && (
-              <Description description={caseData.case_description}  setActiveButton={setActiveButton}   />
+              <Description
+                description={caseData.case_description}
+                setActiveButton={setActiveButton}
+              />
             )}
             {activeButton === "Q&A" && qaData && (
               <QandA data={qaData} QAdone={QAdone} setQAdone={setQAdone} />
@@ -271,4 +274,3 @@ function StudyPage() {
 }
 
 export default StudyPage;
-

@@ -2,7 +2,7 @@ import React from "react";
 
 function Capsule({ analysis, file, nextCase }) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6 relative">
+    <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6 relative mb-10">
       {/* Heading */}
       <h2 className="text-3xl md:text-4xl font-extrabold text-purple-800 text-center">
         CAPSULE
