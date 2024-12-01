@@ -11,6 +11,8 @@ import StudyLight from "../assets/StudyLight.png";
 import StudyDark from "../assets/StudyDark.png";
 import StatsWhite from "../assets/StatsWhite.png";
 import StatsBlack from "../assets/StatsBlack.png";
+import LogoutBlack from "../assets/LogoutBlack.png";
+import LogoutWhite from "../assets/LogoutWhite.png";
 const Sidebar = ({ activeButton, setActiveButton }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -25,11 +27,14 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleButtonClick =  (buttonName) => {
-     setActiveButton(buttonName);
-     navigate("/", { state: { activeButton: buttonName } }); // Pass activeButton via state
-    };
-  
+  const handleButtonClick = (buttonName) => {
+    if(buttonName === "Logout"){
+      handleLogout();
+    }
+    else{
+    setActiveButton(buttonName);
+    navigate("/", { state: { activeButton: buttonName } }); // Pass activeButton via state
+   } };
 
   const toggleSidebar = () => {
     if (!isMobile) {
@@ -46,6 +51,7 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
       lightIcon: StatsWhite,
     },
     { name: "Settings", darkIcon: SettingsLight, lightIcon: SettingsDark },
+    { name: "Logout", darkIcon: LogoutBlack, lightIcon: LogoutWhite },
   ];
 
   const sidebarVariants = {
@@ -190,12 +196,11 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
               `}
             >
               <img
-               src={
-                activeButton === button.name
-                  ? button.lightIcon 
-                  : button.darkIcon  
-              }
-              
+                src={
+                  activeButton === button.name
+                    ? button.lightIcon
+                    : button.darkIcon
+                }
                 alt={`${button.name} icon`}
                 className={`
                   ${isMobile ? "w-6 h-6" : "w-7 h-7"} 
@@ -218,7 +223,7 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
                 </AnimatePresence>
               )}
             </motion.button>
-          ))}
+          ))}          
         </nav>
 
         {!isMobile && (

@@ -2,20 +2,22 @@ import React, { useEffect, useState } from "react";
 import Image from "../assets/Girl.png";
 import Events from "./events.tsx";
 import Progress from "./Progress.tsx";
+import { i } from "framer-motion/client";
 
 function DashComponent({ setActiveButton }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1080);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1080); // Update state based on screen width
+      setIsMobile(window.innerWidth <= 1080);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  console.log(isMobile) 
 
   return (
     <div className="flex-grow">
