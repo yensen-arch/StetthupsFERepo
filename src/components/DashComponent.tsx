@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Image from "../assets/Girl.png";
 import Events from "./events.tsx";
 import Progress from "./Progress.tsx";
-import { i } from "framer-motion/client";
 
 function DashComponent({ setActiveButton }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1080);
+  const [studyData, setStudyData] = useState();
 
   useEffect(() => {
     const handleResize = () => {
@@ -17,6 +17,8 @@ function DashComponent({ setActiveButton }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  
 
   return (
     <div className="flex-grow">
@@ -73,7 +75,10 @@ function DashComponent({ setActiveButton }) {
         {/* Continue Learning Section */}
         <div className="flex w-full gap-0">
           <div className="flex-grow">
-            <Progress setActiveButton={setActiveButton} />
+            <Progress
+              setActiveButton={setActiveButton}
+              setStudyData={setStudyData}
+            />
           </div>
           {!isMobile && (
             <div className="w-[500px]">

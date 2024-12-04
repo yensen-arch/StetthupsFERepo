@@ -1,6 +1,6 @@
 "use client";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProgressCircles from "./ProgressCircles.tsx";
 
@@ -135,6 +135,7 @@ function StudyComponent() {
     topicName: string | null;
   }>({ subjectName: null, topicName: null });
   const navigate = useNavigate();
+  const subjectRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   async function getIncompleteCasesAfter(subjectData, inputCaseId) {
     return new Promise((resolve, reject) => {
@@ -273,6 +274,12 @@ function StudyComponent() {
       });
 
       setSubjectData(subjectDataMap);
+      const storedStudyData = localStorage.getItem("studyData");
+      if (storedStudyData) {
+        const { subscriptionId, subjectId } = JSON.parse(storedStudyData);
+        handlePlanSelect(parseInt(subscriptionId));
+        localStorage.removeItem("studyData");
+      }
     } catch (err) {
       console.error("Error fetching master data:", err);
     }
@@ -282,26 +289,36 @@ function StudyComponent() {
     setExpandedPlan(expandedPlan === planId ? null : planId);
     setExpandedSubject({});
     setExpandedTopic({});
-
-    if (!subjectData[planId]) {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        fetchMasterData(token, [planId]);
-      }
+    const studyData = localStorage.getItem("studyData");
+    if (studyData) {
+      const { subjectId } = JSON.parse(studyData);
+      handleSubjectSelect(planId, parseInt(subjectId));
     }
   };
-
-  const handleSubjectSelect = (planId: number, subjectId: number) => {
-    setExpandedSubject((prev) => ({
-      ...prev,
-      [planId]: prev[planId] === subjectId ? null : subjectId,
-    }));
-    setExpandedTopic((prev) => ({
-      ...prev,
-      [planId]: {},
-    }));
-  };
-  // console.log(subjectData)
+  const scrollToSubject = useCallback((subjectId: number) => {
+    if (subjectRefs.current[subjectId]) {
+      subjectRefs.current[subjectId]?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
+  const handleSubjectSelect = useCallback(
+    (planId: number, subjectId: number) => {
+      setExpandedSubject((prev) => ({
+        ...prev,
+        [planId]: prev[planId] === subjectId ? null : subjectId,
+      }));
+      setExpandedTopic((prev) => ({
+        ...prev,
+        [planId]: {},
+      }));
+      setTimeout(() => {
+        scrollToSubject(subjectId);
+      }, 700);
+    },
+    [scrollToSubject]
+  );
   const handleTopicSelect = (
     planId: number,
     subjectId: number,
@@ -316,8 +333,6 @@ function StudyComponent() {
     }));
   };
   const handleBuyPlan = (planId: number) => {
-    console.log(`Buying plan ${planId}`);
-  
     // Define the plan links
     const planLinks: { [key: number]: string } = {
       2: "https://stetthups.com/neet-pg-course/",
@@ -325,7 +340,7 @@ function StudyComponent() {
       4: "https://stetthups.com/fmge/",
       5: "https://stetthups.com/plab/",
     };
-  
+
     // Check if the planId exists in the links
     if (planLinks[planId]) {
       window.location.href = planLinks[planId];
@@ -333,7 +348,6 @@ function StudyComponent() {
       console.error("Invalid plan ID");
     }
   };
-  
 
   if (loading) {
     return (
@@ -354,7 +368,7 @@ function StudyComponent() {
           <AnimatePresence>
             {subscriptionData?.map((plan) => (
               <Card key={plan.id} className="bg-white overflow-hidden">
-                <CardContent className="p-0">
+                <CardContent className="">
                   <div className="w-full h-auto p-4 md:p-6 flex items-center justify-between bg-white hover:bg-gray-50">
                     <Button
                       className="flex-grow text-left"
@@ -405,7 +419,7 @@ function StudyComponent() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.6 }}
                         className="overflow-hidden"
                       >
                         {subjectData[plan.id] ? (
@@ -413,6 +427,9 @@ function StudyComponent() {
                             {subjectData[plan.id].map((item) => (
                               <div
                                 key={item.subject.id}
+                                ref={(el) =>
+                                  (subjectRefs.current[item.subject.id] = el)
+                                }
                                 className="py-4 px-2 hover:bg-gray-50 transition-colors duration-200"
                               >
                                 <Button

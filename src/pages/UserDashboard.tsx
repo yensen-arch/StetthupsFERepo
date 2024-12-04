@@ -6,11 +6,11 @@ import Settings from "../components/Settings.tsx";
 import Sidebar from "../components/Sidebar.tsx";
 import { useLocation } from "react-router-dom";
 
-
 function UserDashboard() {
-  // Set "Dashboard" as the default active button
   const location = useLocation();
-  const [activeButton, setActiveButton] = useState(location.state?.activeButton || "Dashboard");
+  const [activeButton, setActiveButton] = useState(
+    location.state?.activeButton || "Dashboard"
+  );
 
   const renderActiveComponent = () => {
     switch (activeButton) {
@@ -21,7 +21,7 @@ function UserDashboard() {
       case "Settings":
         return <Settings />;
       default:
-        return <DashComponent setActiveButton={setActiveButton}/>;
+        return <DashComponent setActiveButton={setActiveButton} />;
     }
   };
 

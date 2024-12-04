@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import BeautifulSpinner from "./BeautifulSpinner.tsx";
-import { sub } from "framer-motion/client";
 import { useNavigate } from "react-router-dom";
-
 
 interface Subject {
   id: number;
@@ -28,12 +26,14 @@ interface SubscriptionPlan {
 // Global variable for subject data
 let subjectData: { [key: number]: SubjectData[] } = {};
 
-function Progress({setActiveButton} ) {
-  const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>(
-    []
-  );
+function Progress({ setActiveButton }: { 
+  setActiveButton: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +42,8 @@ function Progress({setActiveButton} ) {
       if (!token) {
         setError("No token found in localStorage");
         setLoading(false);
+        localStorage.removeItem("user");
+        navigate("/login");
         return;
       }
 
@@ -76,7 +78,7 @@ function Progress({setActiveButton} ) {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const fetchMasterData = async (token: string, subscriptionIds: number[]) => {
     try {
@@ -142,7 +144,7 @@ function Progress({setActiveButton} ) {
           // Render only non-free plans
           return nonFreePlans.map(([subscriptionId, subjects]) => (
             <div key={subscriptionId} className="mb-12">
-              <h3 className=" font-semibold text-gray-800 mb-6 text-left">
+              <h3 className="font-semibold text-gray-800 mb-6 text-left">
                 {subscriptionData.find((s) => s.id === parseInt(subscriptionId))
                   ?.subscription_name || "Unknown Subscription"}
               </h3>
@@ -168,8 +170,6 @@ function Progress({setActiveButton} ) {
   );
 }
 
-
-
 function SubjectCard({
   subject,
   subscriptionId,
@@ -182,14 +182,16 @@ function SubjectCard({
   setActiveButton: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const handleClick = () => {
+    const data = { subscriptionId, subjectId: subject.subject.id };
+    localStorage.setItem("studyData", JSON.stringify(data));
     setActiveButton("Study");
+
   };
 
   return (
     <div
       className="bg-white rounded-lg shadow-lg py-5 px-2 hover:shadow-2xl transition-shadow duration-300"
       onClick={handleClick}
-
     >
       <div className="flex items-left mb-4">
         <img
@@ -222,3 +224,4 @@ function SubjectCard({
 }
 
 export default Progress;
+
