@@ -73,6 +73,32 @@ function StudyPage() {
       }
     };
 
+    const checkCaseCompletion = async () => {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken || !caseId) {
+        console.error("Missing access_token or caseId.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://admin.stetthups.com/api/v1/get/result/${caseId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setQAdone(data.data[0]?.is_completed); // Set QAdone state based on result
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    checkCaseCompletion();
+
     const fetchQaData = async () => {
       const accessToken = localStorage.getItem("access_token");
       if (!accessToken || !caseId) {
@@ -249,7 +275,7 @@ function StudyPage() {
             </nav>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md">
+          <div className="bg-white rounded-lg shadow-md transition-all duration-400">
             {activeButton === "Description" && caseData && (
               <Description
                 description={caseData.case_description}

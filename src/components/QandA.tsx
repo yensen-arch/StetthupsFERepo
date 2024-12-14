@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Check, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 
 function QandA({ data, QAdone, setQAdone }) {
   const { quiz = [] } = data;
@@ -11,52 +11,60 @@ function QandA({ data, QAdone, setQAdone }) {
   const userID = user?.id;
   const accessToken = localStorage.getItem("access_token");
   const { caseId } = useParams();
-
   const currentQuiz = quiz[currentIndex] || {};
   const { question = "No question available", explanation = "" } = currentQuiz;
 
   useEffect(() => {
     if (!quiz.length) return;
-    const allAnswered = quiz.every((_, index) => selectedAnswers[index]);
-    setQAdone(allAnswered);
 
-    if (allAnswered) {
-      const totalQuestions = quiz.length;
-      const totalAttempted = Object.keys(selectedAnswers).length;
-      const score = Object.values(selectedAnswers).filter(
-        (answer) => answer.isCorrect
-      ).length;
+    if (!QAdone) {
+      const allAnswered = quiz.every((_, index) => selectedAnswers[index]);
+      setQAdone(allAnswered);
+      if (allAnswered) {
+        const totalQuestions = quiz.length;
+        const totalAttempted = Object.keys(selectedAnswers).length;
+        const score = Object.values(selectedAnswers).filter(
+          (answer) => answer.isCorrect
+        ).length;
 
-      const result = {
-        case_id: caseId,
-        is_completed: 1,
-        score,
-        total_attempted_questions: totalAttempted,
-        total_questions: totalQuestions,
-        user_id: userID,
-      };
+        const result = {
+          case_id: caseId,
+          is_completed: 1,
+          score,
+          total_attempted_questions: totalAttempted,
+          total_questions: totalQuestions,
+          user_id: userID,
+        };
 
-      fetch("https://admin.stetthups.com/api/v1/make/result", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(result),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Failed to submit results");
+        fetch("https://admin.stetthups.com/api/v1/make/result", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(result),
         })
-        .catch((error) => {
-          console.error("Error submitting results:", error);
-        });
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error("Failed to submit results");
+          })
+          .catch((error) => {
+            console.error("Error submitting results:", error);
+          });
+      }
     }
-  }, [selectedAnswers, quiz, setQAdone, caseId, userID, accessToken]);
+  }, [selectedAnswers, quiz, setQAdone, caseId, userID, accessToken, QAdone]);
+
+  useEffect(() => {
+    if (QAdone) {
+      localStorage.setItem(`capsuleAccess_${caseId}`, 'true');
+    }
+  }, [QAdone, caseId]);
 
   const handleCheckboxChange = (optionKey) => {
+    if (QAdone) return; // Prevent changing answers if quiz is completed
     const isCorrect = optionKey === currentQuiz.correct_ans;
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -68,7 +76,6 @@ function QandA({ data, QAdone, setQAdone }) {
   };
 
   const handleNext = () => {
-    if (!selectedAnswers[currentIndex]) return; // Prevent navigating if current question is unanswered
     if (currentIndex < quiz.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (QAdone) {
@@ -123,10 +130,8 @@ function QandA({ data, QAdone, setQAdone }) {
             const answerText = currentQuiz[optionKey];
             const selectedAnswer = selectedAnswers[currentIndex];
             const isSelected = selectedAnswer?.selected === key.toUpperCase();
-            const isCorrect = selectedAnswer?.isCorrect;
-            const isCorrectOption =
-              key.toUpperCase() === currentQuiz.correct_ans;
-            const isDisabled = !!selectedAnswers[currentIndex];
+            const isCorrect = key.toUpperCase() === currentQuiz.correct_ans;
+            const isDisabled = QAdone || selectedAnswer;
 
             return (
               <motion.div
@@ -144,7 +149,7 @@ function QandA({ data, QAdone, setQAdone }) {
                       ? isCorrect
                         ? "bg-green-100 border-2 border-green-400"
                         : "bg-red-100 border-2 border-red-400"
-                      : isDisabled && isCorrectOption
+                      : isDisabled && isCorrect
                       ? "bg-green-100 border-2 border-green-400"
                       : "bg-white border border-gray-300 hover:border-purple-800"
                   } ${
@@ -158,12 +163,12 @@ function QandA({ data, QAdone, setQAdone }) {
                 >
                   <span
                     className={`text-lg ${
-                      isSelected ? "font-semibold" : ""
+                      isSelected || (isDisabled && isCorrect) ? "font-semibold" : ""
                     } text-left`}
                   >
                     {answerText || "No option available"}
                   </span>
-                  {isSelected && (
+                  {(isSelected || (isDisabled && isCorrect)) && (
                     <span className="ml-auto">
                       {isCorrect ? (
                         <Check className="w-6 h-6 text-green-600" />
@@ -174,15 +179,17 @@ function QandA({ data, QAdone, setQAdone }) {
                   )}
                 </motion.li>
                 <AnimatePresence>
-                  {selectedAnswer && isCorrectOption && (
+                  {(selectedAnswer || QAdone) && isCorrect && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className=" p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
+                      className="mt-2 p-4 bg-green-50 border border-green-200 rounded-lg shadow-inner"
                     >
-                      <p className="text-gray-700 text-lg text-left">{explanation}</p>
+                      <p className="text-gray-700 text-lg text-left">
+                        {explanation}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -207,12 +214,10 @@ function QandA({ data, QAdone, setQAdone }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleNext}
-          disabled={
-            !selectedAnswers[currentIndex] || 
-            (currentIndex === quiz.length - 1 && !QAdone)
-          }          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
+          disabled={!selectedAnswers[currentIndex] && !QAdone}
+          className="px-6 py-2 font-semibold text-white bg-purple-800 rounded-lg shadow-md hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center"
         >
-          Next
+          {currentIndex === quiz.length - 1 ? "Finish" : "Next"}
           <ChevronRight className="w-5 h-5 ml-2" />
         </motion.button>
       </div>
@@ -237,3 +242,4 @@ function QandA({ data, QAdone, setQAdone }) {
 }
 
 export default QandA;
+
