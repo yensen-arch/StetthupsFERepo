@@ -62,8 +62,7 @@ function Progress({ setActiveButton }: {
 
         if (subscriptionResponse.status === 302) {
           navigate("/login");
-        }
-        if (subscriptionData.success) {
+        } else if (subscriptionData.success) {
           setSubscriptionData(subscriptionData.data);
           const subscriptionIds = subscriptionData.data.map(
             (item: SubscriptionPlan) => item.id

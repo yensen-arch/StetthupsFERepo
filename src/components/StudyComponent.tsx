@@ -229,8 +229,9 @@ function StudyComponent() {
           }
         );
         const subscriptionData = await subscriptionResponse.json();
-
-        if (subscriptionData.success) {
+        if (subscriptionResponse.status === 302) {
+          navigate("/login");
+        } else if (subscriptionData.success) {
           setSubscriptionData(subscriptionData.data);
           setLoading(false);
 

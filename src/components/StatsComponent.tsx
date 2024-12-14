@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import {useNavigate} from 'react-router-dom';
 
 function StatsComponent() {
+  const navigate= useNavigate();
   const token = localStorage.getItem("access_token");
   const [stats, setStats] = useState({
     percentageCorrect: "",
@@ -26,6 +28,11 @@ function StatsComponent() {
             },
           }
         );
+        if(response.status === 401){
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("user");
+          navigate("/login");
+        }
         const data = await response.json();
         setStats({
           percentageCorrect: data?.data?.percentageCorrect || 0,
