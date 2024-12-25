@@ -4,8 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 function ForgotPassword() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const email = user?.email || ""; // Ensure email exists
+  const [email, setEmail] = useState(""); // Added email state
   const [OTP, setOTP] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +14,7 @@ function ForgotPassword() {
     try {
       const response = await axios.post(
         "https://admin.stetthups.com/api/v1/forget/password/email/otp",
-        { email }
+        { email } // Using the email state
       );
       if (response.data.success) {
         toast.success("OTP sent to your email.");
@@ -39,7 +38,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("email", email);
+      formData.append("email", email); // Using the email state
       formData.append("otp", OTP);
       formData.append("password", password);
 
@@ -58,9 +57,8 @@ function ForgotPassword() {
         setSuccessMessage("Password reset successful. You can now log in.");
         setErrorMessage("");
         setTimeout(() => {
-            window.location.href = "/login";
-          }, 1500);
-        
+          window.location.href = "/login";
+        }, 1500);
       } else {
         setErrorMessage(response.data.message || "Failed to reset password.");
         toast.error(response.data.message || "Failed to reset password.");
@@ -82,6 +80,17 @@ function ForgotPassword() {
           Forgot Password
         </h2>
         <form onSubmit={verifyOTP} className="space-y-6">
+          <div>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Your Email"
+              className="w-full placeholder:text-gray-500 px-4 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
+              required
+            />
+          </div>
           <div>
             <input
               id="OTP"
