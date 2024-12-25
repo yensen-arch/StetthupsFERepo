@@ -166,11 +166,12 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
           </AnimatePresence>
         </div>
         <input
-          type="date"
+          type=""
           name="dob"
           value={formData.dob || ""}
           onChange={handleInputChange}
-          className="w-full text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
+          placeholder="Date of Birth"
+          className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
         />
         <div className="relative">
           <input
