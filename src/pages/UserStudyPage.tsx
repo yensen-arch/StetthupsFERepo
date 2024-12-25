@@ -173,7 +173,7 @@ function StudyPage() {
           setVideoUrl(result.data.case_files);
           setActiveButton("Description"); // Set active button to Description
           setQAdone(false); // Reset QAdone state
-          window.scrollTo({ top: 0, behavior: "smooth" }); // Add this line to scroll to top
+          window.scrollTo(0, 0); 
         } else {
           console.error("Error fetching case data:", result.message);
         }
