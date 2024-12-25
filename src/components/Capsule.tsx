@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function Capsule({ analysis, file, nextCase }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto space-y-6 relative mb-10">
       {/* Heading */}
