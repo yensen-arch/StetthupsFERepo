@@ -15,11 +15,15 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
-  const toggleConfirmPasswordVisibility = () => setConfirmPassVisible(!confirmPassVisible);
+  const toggleConfirmPasswordVisibility = () =>
+    setConfirmPassVisible(!confirmPassVisible);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setOpenDropdown(false);
       }
     };
@@ -106,11 +110,27 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
   };
 
   const examOptions = [
-    "Anatomy", "Physiology", "Biochemistry", "Microbiology", "Pathology",
-    "Forensic Medicine", "Preventive and social medicine", "E.N.T", "Ophthalmology",
-    "MEDICINE", "Psychiatry", "Skin and venereology", "Respiratory Medicine",
-    "Family Medicine", "Emergency Medicine", "Pediatrists", "Obstetrics and gynaecology",
-    "Surgery", "Orthopaedics", "Anesthesia", "Radiology"
+    "Anatomy",
+    "Physiology",
+    "Biochemistry",
+    "Microbiology",
+    "Pathology",
+    "Forensic Medicine",
+    "Preventive and social medicine",
+    "E.N.T",
+    "Ophthalmology",
+    "MEDICINE",
+    "Psychiatry",
+    "Skin and venereology",
+    "Respiratory Medicine",
+    "Family Medicine",
+    "Emergency Medicine",
+    "Pediatrists",
+    "Obstetrics and gynaecology",
+    "Surgery",
+    "Orthopaedics",
+    "Anesthesia",
+    "Radiology",
   ];
 
   return (
@@ -165,14 +185,19 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             )}
           </AnimatePresence>
         </div>
-        <input
-          type=""
-          name="dob"
-          value={formData.dob || ""}
-          onChange={handleInputChange}
-          placeholder="Date of Birth"
-          className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            name="dob"
+            value={formData.dob || ""}
+            onChange={handleInputChange}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => (e.target.type = formData.dob ? "date" : "text")}
+            placeholder="Date of Birth"
+            className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
+          />
+        </div>
+
         <div className="relative">
           <input
             type={passwordVisible ? "text" : "password"}
@@ -218,7 +243,9 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             onChange={handleCheckboxChange}
             className="w-4 h-4 rounded border-gray-300 focus:ring-[#4E46B4]"
           />
-          <span className="text-xs sm:text-sm">I agree to the Terms & Conditions</span>
+          <span className="text-xs sm:text-sm">
+            I agree to the Terms & Conditions
+          </span>
         </label>
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
@@ -243,4 +270,3 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
     </motion.div>
   );
 }
-
