@@ -132,8 +132,8 @@ const Sidebar = ({ activeButton, setActiveButton }) => {
           transition-all duration-300 ease-in-out
           ${
             isMobile
-              ? "fixed bottom-0 left-0 right-0 h-16 z-1000 px-0 py-0 w-full"
-              : "h-screen fixed top-0 left-0 z-10000 flex-col"
+              ? "fixed bottom-0 left-0 right-0 h-16 z-50 px-0 py-0 w-full"
+              : "h-screen fixed top-0 left-0 z-50 flex-col"
           }
           overflow-hidden
         `}
