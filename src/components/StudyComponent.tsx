@@ -467,10 +467,10 @@ function StudyComponent() {
                                         <span className="font-semibold text-gray-900 ">
                                           {item.subject.subject_name}
                                         </span>
-                                        <div className="flex items-center gap-2">
+                                        <div className="hidden md:flex items-center gap-2">
                                           <span className="text-sm text-gray-600">
                                             {item.completed_topics}/
-                                            {item.total_topics} topics
+                                            {item.total_topics} Systems
                                           </span>
                                           <ChevronIcon
                                             expanded={
@@ -532,11 +532,11 @@ function StudyComponent() {
                                                 <span className="font-medium text-gray-900">
                                                   {topicData.topic.topic_name}
                                                 </span>
-                                                <div className="flex items-center gap-2">
+                                                <div className="hidden md:flex items-center gap-2">
                                                   <span className="text-sm text-gray-600">
                                                     {topicData.completed_cases}/
                                                     {topicData.total_cases}{" "}
-                                                    cases
+                                                    Cases
                                                   </span>
                                                   <ChevronIcon
                                                     expanded={
