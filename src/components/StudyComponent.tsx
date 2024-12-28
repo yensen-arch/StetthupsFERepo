@@ -246,6 +246,7 @@ function StudyComponent() {
         }
       } catch (err) {
         setError("Failed to fetch data");
+        navigate("/login");
         console.error("Error:", err);
         setLoading(false);
       }

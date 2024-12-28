@@ -59,7 +59,6 @@ function Progress({ setActiveButton }: {
           }
         );
         const subscriptionData = await subscriptionResponse.json();
-
         if (subscriptionResponse.status === 302) {
           navigate("/login");
         } else if (subscriptionData.success) {
@@ -73,6 +72,7 @@ function Progress({ setActiveButton }: {
         }
       } catch (err) {
         setError("Failed to fetch data");
+        navigate("/login");
         console.error("Error:", err);
       } finally {
         setLoading(false);
