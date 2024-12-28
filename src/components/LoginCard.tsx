@@ -36,7 +36,7 @@ function LoginCard({ onNext, throughPhone }) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl px-4 py-6 sm:px-8 md:px-12 sm:w-[45%]">
+    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl px-4 py-6 sm:px-8 md:px-12 sm:w-[95%]">
       <h2 className="text-2xl sm:text-3xl font-bold text-[#4E46B4] mb-2 sm:mb-4 text-center">Login</h2>
       <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-6 sm:mb-8 text-center">Sign in to your account</h3>
 
