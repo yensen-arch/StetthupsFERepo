@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 export function SignUp3({ onNext, onBack, onInputChange, formData }) {
   const [isChecked, setIsChecked] = useState(formData.agreeToTerms || false);
   const [isConfirmPassValid, setIsConfirmPassValid] = useState(true);
@@ -98,7 +97,44 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
 
       if (response.ok) {
         toast.success("User registered successfully!");
-        navigate("/login");
+        // Make the subsequent POST request to email OTP endpoint
+        const otpResponse = await fetch(
+          "https://admin.stetthups.com/api/v1/email/otp",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: formData.Email }),
+          }
+        );
+        if (otpResponse.ok) {
+          toast.success("OTP sent successfully!");
+          onNext();
+        } else {
+          toast.error("Failed to send OTP!");
+        }
+      } else if (response.status === 422 && data.success === false) {
+        if (data.message.email) {
+          toast.success("User registered successfully!");
+          // Make the subsequent POST request to email OTP endpoint
+          const otpResponse = await fetch(
+            "https://admin.stetthups.com/api/v1/email/otp",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email: formData.Email }),
+            }
+          );
+          if (otpResponse.ok) {
+            toast.success("OTP sent successfully!");
+            onNext();
+          } else {
+            toast.error("Failed to send OTP!");
+          }
+        }
       } else {
         toast.error("User registration failed!");
         console.error("Error:", data);

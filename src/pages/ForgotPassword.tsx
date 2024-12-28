@@ -16,24 +16,29 @@ function ForgotPassword() {
         "https://admin.stetthups.com/api/v1/forget/password/email/otp",
         { email } // Using the email state
       );
+  
       if (response.data.success) {
         toast.success("OTP sent to your email.");
         setSuccessMessage("OTP sent successfully. Please check your inbox.");
         setErrorMessage("");
       } else {
-        setErrorMessage(response.data.message || "Failed to send OTP.");
-        toast.error(response.data.message || "Failed to send OTP.");
+        const message =
+          typeof response.data.message === "string"
+            ? response.data.message
+            : "Failed to send OTP.";
+        setErrorMessage(message);
+        toast.error(message);
       }
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message || "An error occurred while sending OTP."
-      );
-      toast.error(
-        error.response?.data?.message || "An error occurred while sending OTP."
-      );
+      const message =
+        typeof error.response?.data?.message === "string"
+          ? error.response.data.message
+          : "An error occurred while sending OTP.";
+      setErrorMessage(message);
+      toast.error(message);
     }
   };
-
+  
   const verifyOTP = async (e) => {
     e.preventDefault();
     try {
@@ -41,7 +46,7 @@ function ForgotPassword() {
       formData.append("email", email); // Using the email state
       formData.append("otp", OTP);
       formData.append("password", password);
-
+  
       const response = await axios.post(
         "https://admin.stetthups.com/api/v1/verify/otp/change/password",
         formData,
@@ -51,7 +56,7 @@ function ForgotPassword() {
           },
         }
       );
-
+  
       if (response.data.success) {
         toast.success("Password changed successfully!");
         setSuccessMessage("Password reset successful. You can now log in.");
@@ -60,19 +65,23 @@ function ForgotPassword() {
           window.location.href = "/login";
         }, 1500);
       } else {
-        setErrorMessage(response.data.message || "Failed to reset password.");
-        toast.error(response.data.message || "Failed to reset password.");
+        const message =
+          typeof response.data.message === "string"
+            ? response.data.message
+            : "Failed to reset password.";
+        setErrorMessage(message);
+        toast.error(message);
       }
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message || "Error verifying OTP. Try again."
-      );
-      toast.error(
-        error.response?.data?.message || "Error verifying OTP. Try again."
-      );
+      const message =
+        typeof error.response?.data?.message === "string"
+          ? error.response.data.message
+          : "An unexpected error occurred.";
+      setErrorMessage(message);
+      toast.error(message);
     }
   };
-
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-purple-100 to-purple-200">
       <div className="w-full max-w-md p-8 bg-white rounded-3xl shadow-2xl transform transition-all hover:scale-105 sm:p-12">

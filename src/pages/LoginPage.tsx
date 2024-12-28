@@ -81,7 +81,8 @@ export default function LoginPage() {
   };
 
   const handleSignUp4Next = () => {
-    setCurrentComponent("signup5");
+    // setCurrentComponent("signup5");
+    setCurrentComponent("login");
   };
 
   return (
@@ -132,13 +133,13 @@ export default function LoginPage() {
         {currentComponent === "signup3" && (
           <SignUp3
             onBack={handleSignUp1Next}
-            onNext={handleSignUp4Next}
+            onNext={handleSignUp3Next}
             onInputChange={handleInputChange}
             formData={formData}
           />
         )}
         {currentComponent === "signup4" && (
-          <SignUp4 onNext={handleSignUp4Next} />
+          <SignUp4 onNext={handleSignUp4Next} formData={formData} />
         )}
         {currentComponent === "signup5" && (
           <SignUp5
@@ -151,4 +152,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

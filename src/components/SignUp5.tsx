@@ -103,12 +103,12 @@ export function SignUp5({ onBack, phoneNumber, formData }) {
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "-100%", opacity: 0 }}
-      className="w-[450px] h-auto max-w-md bg-white rounded-3xl shadow-xl px-12 py-6 space-y-6"
+      className="w-full max-w-[450px] h-auto bg-white rounded-3xl shadow-xl px-6 sm:px-12 py-6 space-y-6 mx-auto"
     >
-      <h2 className="text-3xl font-bold text-[#4E46B4] mb-4 text-center">
+      <h2 className="text-2xl sm:text-3xl font-bold text-[#4E46B4] mb-4 text-center">
         Verify Mobile
       </h2>
-      <div className="flex gap-4 justify-center">
+      <div className="flex gap-2 sm:gap-4 justify-center">
         {otp.map((value, idx) => (
           <input
             key={idx}
@@ -117,7 +117,7 @@ export function SignUp5({ onBack, phoneNumber, formData }) {
             value={value}
             onChange={(e) => handleInputChange(e.target.value, idx)}
             maxLength={1}
-            className={`w-14 h-14 bg-slate-100 border-2 rounded-md text-center text-xl font-semibold focus:outline-none 
+            className={`w-10 h-10 sm:w-14 sm:h-14 bg-slate-100 border-2 rounded-md text-center text-lg sm:text-xl font-semibold focus:outline-none 
               ${value ? "border-[#4E46B4]" : "border-gray-200"} 
               focus:ring-2 focus:ring-[#4E46B4]`}
           />
@@ -136,4 +136,5 @@ export function SignUp5({ onBack, phoneNumber, formData }) {
       </button>
     </motion.div>
   );
+  
 }
