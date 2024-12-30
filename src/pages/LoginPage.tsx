@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import SlidingCard from "../components/SlidingCard.tsx";
 import StetthupsLogo from "../assets/stetthupsLogo.png";
 import StetthUpsText from "../assets/stetthUpsText.png";
@@ -12,8 +11,6 @@ import { SignUp3 } from "../components/SignUp3.tsx";
 import { SignUp4 } from "../components/SignUp4.tsx";
 import { SignUp5 } from "../components/SignUp5.tsx";
 import TermsModal from "../components/TermsModal.js";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import LoginWithPhone from "../components/LoginWithPhone.tsx";
 
 export default function LoginPage() {
@@ -80,8 +77,7 @@ export default function LoginPage() {
     setCurrentComponent("signup4");
   };
 
-  const handleSignUp4Next = () => {
-    // setCurrentComponent("signup5");
+  const handleSignUp4Next = async () => {
     setCurrentComponent("login");
   };
 

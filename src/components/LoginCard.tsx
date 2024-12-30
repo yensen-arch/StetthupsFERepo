@@ -14,7 +14,10 @@ function LoginCard({ onNext, throughPhone }) {
 
   const login = (email, password) => {
     axios
-      .post(`https://admin.stetthups.com/api/v1/email/login`, { email, password })
+      .post(`https://admin.stetthups.com/api/v1/email/login`, {
+        email,
+        password,
+      })
       .then((response) => {
         navigate("/");
         toast.success("Login successful!");
@@ -22,6 +25,40 @@ function LoginCard({ onNext, throughPhone }) {
         localStorage.setItem("user", JSON.stringify(response.data.data.user));
         toast.success("Welcome Back!");
         setErrorMessage("");
+
+        //purchase the plan
+        const accessToken = response.data.data.access_token; // Get the access token
+        const currentDate = new Date();
+        const startDate = currentDate.toISOString().split("T")[0]; // Current date
+        const endDate = new Date(
+          currentDate.setFullYear(currentDate.getFullYear() + 1)
+        )
+          .toISOString()
+          .split("T")[0]; // One year later
+
+        const bodyData = {
+          subscription_id: "1",
+          start_date: startDate,
+          end_date: endDate,
+          payment_method: "Web",
+          transaction_id: "null",
+          price: "0",
+        };
+
+        axios
+          .post(
+            "https://admin.stetthups.com/api/v1/buy/subscription/user",
+            bodyData,
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          )
+          .then(() => {
+            toast.success("Subscription purchased successfully!");
+          })
+          .catch(() => {
+            return;
+          });
       })
       .catch((error) => {
         console.log("Login error:", error);
@@ -37,8 +74,12 @@ function LoginCard({ onNext, throughPhone }) {
 
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl px-4 py-6 sm:px-8 md:px-12 sm:w-[95%]">
-      <h2 className="text-2xl sm:text-3xl font-bold text-[#4E46B4] mb-2 sm:mb-4 text-center">Login</h2>
-      <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-6 sm:mb-8 text-center">Sign in to your account</h3>
+      <h2 className="text-2xl sm:text-3xl font-bold text-[#4E46B4] mb-2 sm:mb-4 text-center">
+        Login
+      </h2>
+      <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-6 sm:mb-8 text-center">
+        Sign in to your account
+      </h3>
 
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div>
@@ -72,7 +113,11 @@ function LoginCard({ onNext, throughPhone }) {
             className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
-            {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+            {showPassword ? (
+              <AiOutlineEyeInvisible size={20} />
+            ) : (
+              <AiOutlineEye size={20} />
+            )}
           </button>
         </div>
         {errorMessage && (
@@ -127,4 +172,3 @@ function LoginCard({ onNext, throughPhone }) {
 }
 
 export default LoginCard;
-
