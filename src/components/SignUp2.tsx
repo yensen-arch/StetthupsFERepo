@@ -22,6 +22,7 @@ interface State {
 }
 
 export function SignUp2({ onNext, onBack, onInputChange, formData }) {
+  
   const [states, setStates] = useState<State[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [colleges, setColleges] = useState<College[]>([]);
@@ -125,6 +126,11 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
   const CustomDropdown = ({ name, options, value, onChange }) => {
     const isOpen = openDropdown === name;
     const toggleDropdown = () => setOpenDropdown(isOpen ? null : name);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const filteredOptions = options.filter((option) =>
+      option.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
       <div ref={dropdownRefs[name]} className="relative w-full">
@@ -142,26 +148,41 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
         </button>
         <AnimatePresence>
           {isOpen && (
-            <motion.ul
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
               className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto bottom-full mb-1"
-              role="listbox"
             >
-              {options.map((option) => (
-                <li
-                  key={option.id}
-                  onClick={() => onChange(option.id.toString())}
-                  className="px-3 py-2 cursor-pointer hover:bg-slate-100 transition duration-300"
-                  role="option"
-                  aria-selected={value === option.id.toString()}
-                >
-                  {option.name}
-                </li>
-              ))}
-            </motion.ul>
+              {name === "College Name" && (
+                <div className="p-2">
+                  <input
+                    type="text"
+                    placeholder="Search colleges..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4]"
+                  />
+                </div>
+              )}
+              <ul role="listbox">
+                {filteredOptions.map((option) => (
+                  <li
+                    key={option.id}
+                    onClick={() => {
+                      onChange(option.id.toString());
+                      setSearchTerm("");
+                    }}
+                    className="px-3 py-2 cursor-pointer hover:bg-slate-100 transition duration-300"
+                    role="option"
+                    aria-selected={value === option.id.toString()}
+                  >
+                    {option.name}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
@@ -245,3 +266,4 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
     </motion.div>
   );
 }
+
