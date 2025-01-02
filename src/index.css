@@ -20,5 +20,4 @@ code {
 html, body {
   height: 100vh;
   min-height: -webkit-fill-available; /* Safari-specific viewport height fix */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
