@@ -102,6 +102,10 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
 
       const data = await response.json();
 
+      if(response.status === 422){
+        toast.error("Please Recheck the Email/Phone Number");
+        return;
+      }
       if (response.ok) {
         toast.success("User registered successfully!");
         // Make the subsequent POST request to email OTP endpoint
