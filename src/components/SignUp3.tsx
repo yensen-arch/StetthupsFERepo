@@ -2,17 +2,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 export function SignUp3({ onNext, onBack, onInputChange, formData }) {
   const [isChecked, setIsChecked] = useState(formData.agreeToTerms || false);
   const [isConfirmPassValid, setIsConfirmPassValid] = useState(true);
-  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPassVisible, setConfirmPassVisible] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [selectedDate, setSelectedDate] = useState(
+    formData.dob ? new Date(formData.dob) : null
+  );
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    onInputChange({ dob: date ? date.toISOString().split("T")[0] : "" });
+  };
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
   const toggleConfirmPasswordVisibility = () =>
     setConfirmPassVisible(!confirmPassVisible);
@@ -222,7 +229,18 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
           </AnimatePresence>
         </div>
         <div className="relative">
-          <input
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select your Date of Birth"
+            className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
+            maxDate={new Date()} // Ensures no future dates are picked
+            showYearDropdown
+            showMonthDropdown
+            dropdownMode="select"
+          />
+          {/* <input
             type="text"
             name="dob"
             value={formData.dob || ""}
@@ -231,7 +249,7 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             onBlur={(e) => (e.target.type = formData.dob ? "date" : "text")}
             placeholder="Date of Birth"
             className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
-          />
+          /> */}
         </div>
 
         <div className="relative">
