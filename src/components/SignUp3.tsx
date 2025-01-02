@@ -191,7 +191,7 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             aria-haspopup="listbox"
             aria-expanded={openDropdown}
           >
-            {formData.examPreference || "Select Exam Preference"}
+            {formData.examPreference || "Subject of Interest"}
           </button>
           <AnimatePresence>
             {openDropdown && (

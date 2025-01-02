@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Description = ({ description, setActiveButton }) => {
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleImageClick = (imageSrc) => {
     setEnlargedImage(imageSrc);
     setIsZoomed(false);
@@ -53,7 +56,7 @@ const Description = ({ description, setActiveButton }) => {
           <button
             onClick={handleDescNext}
             className="absolute bottom-0 right-6 bg-purple-800 text-white px-8 py-2 rounded-lg text-lg hover:bg-purple-700 transition duration-300 sm:static sm:mt-6 sm:ml-auto sm:block"
-            >
+          >
             Next
           </button>
         </div>

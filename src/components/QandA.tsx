@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, X } from "lucide-react";
 
 function QandA({ data, QAdone, setQAdone }) {
   const { quiz = [] } = data;
@@ -13,6 +13,10 @@ function QandA({ data, QAdone, setQAdone }) {
   const { caseId } = useParams();
   const currentQuiz = quiz[currentIndex] || {};
   const { question = "No question available", explanation = "" } = currentQuiz;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (!quiz.length) return;
@@ -59,7 +63,7 @@ function QandA({ data, QAdone, setQAdone }) {
 
   useEffect(() => {
     if (QAdone) {
-      localStorage.setItem(`capsuleAccess_${caseId}`, 'true');
+      localStorage.setItem(`capsuleAccess_${caseId}`, "true");
     }
   }, [QAdone, caseId]);
 
@@ -163,7 +167,9 @@ function QandA({ data, QAdone, setQAdone }) {
                 >
                   <span
                     className={`text-lg ${
-                      isSelected || (isDisabled && isCorrect) ? "font-semibold" : ""
+                      isSelected || (isDisabled && isCorrect)
+                        ? "font-semibold"
+                        : ""
                     } text-left`}
                   >
                     {answerText || "No option available"}
@@ -242,4 +248,3 @@ function QandA({ data, QAdone, setQAdone }) {
 }
 
 export default QandA;
-
