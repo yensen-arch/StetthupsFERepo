@@ -25,8 +25,8 @@ const features = [
     image: Img2,
   },
   {
-    title: "Join Cybex IT Group to Kick Start Your Lesson",
-    description: "Join and Learn from our Top Instructors!",
+    title: "Stetthups, your path to success",
+    description: "Kickstart your Learning Now!",
     image: Img4,
   },
 ];
