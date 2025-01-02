@@ -82,8 +82,8 @@ function QandA({ data, QAdone, setQAdone }) {
   const handleNext = () => {
     if (currentIndex < quiz.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      window.scrollTo(0, 0); 
     } else if (QAdone) {
-      // Navigate to the Capsule tab
       const event = new CustomEvent("navigateToCapsule");
       window.dispatchEvent(event);
     }
@@ -91,6 +91,7 @@ function QandA({ data, QAdone, setQAdone }) {
 
   const handlePrevious = () => {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+    window.scrollTo(0, 0); 
   };
 
   if (!quiz.length) {
