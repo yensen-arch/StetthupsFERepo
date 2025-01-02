@@ -9,7 +9,7 @@ export default function SlidingCard() {
   const slides = [
     {
       title: 'Welcome To StetthUps',
-      content: 'Your one-stop solution for successfully clearing medical exams like Lorem Ipsum.',
+      content: 'Your one-stop solution for successfully clearing medical exams like NEET/NEXT,FMGE and more.',
     },
     {
       title: 'Comprehensive Resources',
