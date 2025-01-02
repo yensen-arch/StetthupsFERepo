@@ -108,7 +108,7 @@ export default function LoginPage() {
           <LoginCard onNext={handleLoginNext} throughPhone={throughPhone} />
         )}
         {currentComponent === "throughPhone" && (
-          <LoginWithPhone onNext={handleSignUp1Back} />
+          <LoginWithPhone onNext={handleSignUp1Back} onSignup={handleLoginNext}/>
         )}
         {currentComponent === "signup1" && (
           <SignUp1

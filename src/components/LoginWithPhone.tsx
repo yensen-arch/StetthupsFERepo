@@ -4,7 +4,7 @@ import axios from "axios";
 import { FaMobileAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-function LoginWithPhone({ onNext }) {
+function LoginWithPhone({ onNext,onSignup }) {
   const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
@@ -112,7 +112,7 @@ function LoginWithPhone({ onNext }) {
         Don't have an account?{" "}
         <button
           className="font-medium text-[#4E46B4] hover:underline"
-          onClick={onNext}
+          onClick={onSignup}
         >
           Sign Up
         </button>

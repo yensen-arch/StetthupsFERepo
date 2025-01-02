@@ -26,12 +26,11 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
   const [cities, setCities] = useState<City[]>([]);
   const [colleges, setColleges] = useState<College[]>([]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
   const dropdownRefs = {
     State: useRef<HTMLDivElement>(null),
     City: useRef<HTMLDivElement>(null),
-    CollegeName: useRef<HTMLDivElement>(null),
-    CurrentYear: useRef<HTMLDivElement>(null),
+    "College Name": useRef<HTMLDivElement>(null),
+    "Current Year": useRef<HTMLDivElement>(null),
   };
 
   useEffect(() => {
@@ -148,7 +147,7 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute z-30 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto bottom-full mb-1"
+              className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto bottom-full mb-1"
               role="listbox"
             >
               {options.map((option) => (
@@ -183,27 +182,29 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
         Let's get you setup for success
       </h3>
       <div className="space-y-4">
-        <CustomDropdown
-          name="State"
-          options={states.map((state) => ({
-            id: state.id,
-            name: state.state_name,
-          }))}
-          value={formData.State}
-          onChange={(value) => handleStateChange(value)}
-        />
-        <CustomDropdown
-          name="City"
-          options={cities.map((city) => ({
-            id: city.id,
-            name: city.city_name,
-          }))}
-          value={formData.City}
-          onChange={(value) => handleInputChange("City", value)}
-        />
         <div className="relative z-20 space-y-4">
           <CustomDropdown
-            name="CollegeName"
+            name="State"
+            options={states.map((state) => ({
+              id: state.id,
+              name: state.state_name,
+            }))}
+            value={formData.State}
+            onChange={(value) => handleStateChange(value)}
+          />
+          <CustomDropdown
+            name="City"
+            options={cities.map((city) => ({
+              id: city.id,
+              name: city.city_name,
+            }))}
+            value={formData.City}
+            onChange={(value) => handleInputChange("City", value)}
+          />
+        </div>
+        <div className="relative z-20 space-y-4">
+          <CustomDropdown
+            name="College Name"
             options={colleges.map((college) => ({
               id: college.id,
               name: college.college_name,
@@ -212,7 +213,7 @@ export function SignUp2({ onNext, onBack, onInputChange, formData }) {
             onChange={(value) => handleInputChange("CollegeName", value)}
           />
           <CustomDropdown
-            name="CurrentYear"
+            name="Current Year"
             options={[
               { id: "1st year", name: "1st year" },
               { id: "2nd year", name: "2nd year" },
