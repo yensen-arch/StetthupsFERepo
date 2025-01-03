@@ -66,6 +66,7 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
       formData.examPreference &&
       formData.dob &&
       password &&
+      password.length >= 8 &&
       confirmPassword &&
       password === confirmPassword &&
       isChecked
@@ -101,7 +102,6 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
       );
 
       const data = await response.json();
-
       if (response.status === 422) {
         toast.error("Please Recheck the Email/Phone Number");
         return;
@@ -253,7 +253,11 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             value={formData.password || ""}
             onChange={handleInputChange}
             placeholder="Password"
-            className="w-full placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
+            className={`w-full placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 ${
+              formData.password && formData.password.length < 8
+                ? "ring-2 ring-red-500"
+                : "focus:ring-[#4E46B4]"
+            } text-sm sm:text-base`}
           />
           <button
             type="button"
