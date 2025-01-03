@@ -102,7 +102,7 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
 
       const data = await response.json();
 
-      if(response.status === 422){
+      if (response.status === 422) {
         toast.error("Please Recheck the Email/Phone Number");
         return;
       }
@@ -237,23 +237,13 @@ export function SignUp3({ onNext, onBack, onInputChange, formData }) {
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
-            placeholderText="Select your Date of Birth"
+            placeholderText="Date of Birth"
             className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
             maxDate={new Date()} // Ensures no future dates are picked
             showYearDropdown
             showMonthDropdown
             dropdownMode="select"
           />
-          {/* <input
-            type="text"
-            name="dob"
-            value={formData.dob || ""}
-            onChange={handleInputChange}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => (e.target.type = formData.dob ? "date" : "text")}
-            placeholder="Date of Birth"
-            className="w-full text-gray-500 placeholder:text-gray-500 px-3 py-2 bg-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4E46B4] text-sm sm:text-base"
-          /> */}
         </div>
 
         <div className="relative">
