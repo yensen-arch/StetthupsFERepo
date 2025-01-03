@@ -5,11 +5,10 @@ import {
   FaPhone,
   FaBirthdayCake,
 } from "react-icons/fa";
-import { MdSchool, MdLocationCity } from "react-icons/md";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Settings() {
   const user = JSON.parse(localStorage.getItem("user")); // Parse the user from localStorage
@@ -18,6 +17,9 @@ function Settings() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleChangePassword = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access_token");
@@ -118,7 +120,7 @@ function Settings() {
 
         <button
           onClick={() => navigate("/forgot-password")}
-          className="mt-4 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300"
+          className="my-8 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300"
         >
           Change Password
         </button>

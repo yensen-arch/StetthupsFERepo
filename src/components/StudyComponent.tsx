@@ -130,6 +130,10 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
 );
 
 function StudyComponent() {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+    
   const [selectedNames, setSelectedNames] = useState<{
     subjectName: string | null;
     topicName: string | null;

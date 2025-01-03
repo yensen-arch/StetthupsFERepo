@@ -10,6 +10,9 @@ function DashComponent({ setActiveButton }) {
   const [studyData, setStudyData] = useState();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1080);
     };
@@ -17,8 +20,6 @@ function DashComponent({ setActiveButton }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  
 
   return (
     <div className="flex-grow">
