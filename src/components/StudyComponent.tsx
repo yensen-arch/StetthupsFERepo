@@ -338,23 +338,6 @@ function StudyComponent() {
       },
     }));
   };
-  const handleBuyPlan = (planId: number) => {
-    // Define the plan links
-    const planLinks: { [key: number]: string } = {
-      2: "https://stetthups.com/neet-pg-course/",
-      3: "https://stetthups.com/usmle/",
-      4: "https://stetthups.com/fmge/",
-      5: "https://stetthups.com/plab/",
-    };
-
-    // Check if the planId exists in the links
-    if (planLinks[planId]) {
-      window.location.href = planLinks[planId];
-    } else {
-      console.error("Invalid plan ID");
-    }
-  };
-
   if (loading) {
     return (
       <div className="p-4 flex items-center justify-center min-h-screen">
@@ -412,8 +395,7 @@ function StudyComponent() {
                         subjectData[plan.id].length === 0) && (
                         <Button
                           className="bg-[#6739B7] text-white hover:bg-[#5a32a3] ml-4"
-                          onClick={() => handleBuyPlan(plan.id)}
-                        >
+                          onClick={() => window.open('/buysubs', '_blank')}                          >
                           Buy
                         </Button>
                       )}

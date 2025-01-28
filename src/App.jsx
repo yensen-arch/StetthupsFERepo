@@ -5,6 +5,7 @@ import UserDashboard from "./pages/UserDashboard.tsx";
 import UserStudyPage from "./pages/UserStudyPage.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
+import BuySubs from "./pages/BuySubs.tsx";
 // Function to check if the user is logged in
 const isLoggedIn = () => {
   const accessToken = localStorage.getItem("access_token");
@@ -38,6 +39,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UserStudyPage />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/buysubs"
+          element={
+            <ProtectedRoute>
+              <BuySubs />
             </ProtectedRoute>
           }
         />
