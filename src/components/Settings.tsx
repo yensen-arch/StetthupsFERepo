@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaUserCircle,
   FaEnvelope,
@@ -7,56 +8,14 @@ import {
 } from "react-icons/fa";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 function Settings() {
-  const user = JSON.parse(localStorage.getItem("user")); // Parse the user from localStorage
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const handleChangePassword = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("access_token");
-
-    try {
-      console.log(oldPassword, newPassword);
-      const response = await fetch(
-        "https://admin.stetthups.com/api/v1/change/password",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            old_password: oldPassword,
-            new_password: newPassword,
-          }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setMessage("Password changed successfully.");
-        toast.success("Password changed successfully.");
-      } else {
-        const error = await response.json();
-        setMessage(error.message || "Password change failed.");
-        toast.error(error.message || "Password change failed.");
-      }
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
-      toast.error("An error occurred. Please try again later.");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center ">
@@ -117,13 +76,19 @@ function Settings() {
             </div>
           </div>
         </div>
-
-        <button
-          onClick={() => navigate("/forgot-password")}
-          className="my-8 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300"
-        >
-          Change Password
-        </button>
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => navigate("/forgot-password")}
+            className="my-8 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300"
+          >
+            Change Password
+          </button>
+          <Link to="/aboutus">
+            <button className="my-8 text-lg text-white p-2 rounded-lg font-bold bg-purple-800 hover:bg-purple-900 transition-colors duration-300">
+              About Us
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
