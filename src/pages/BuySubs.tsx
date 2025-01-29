@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface SubscriptionPlan {
   id: number;
@@ -25,30 +25,33 @@ function BuySubs() {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const accessToken = localStorage.getItem('access_token');
+        const accessToken = localStorage.getItem("access_token");
         if (!accessToken) {
-          throw new Error('Access token not found');
+          throw new Error("Access token not found");
         }
 
-        const response = await fetch('https://admin.stetthups.com/api/v1/get/subscription/plan', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await fetch(
+          "https://admin.stetthups.com/api/v1/get/subscription/plan",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch subscription plans');
+          throw new Error("Failed to fetch subscription plans");
         }
 
         const data = await response.json();
         if (data.success) {
-          setPlans(data.data);
+          setPlans(data.data.slice(1));
         } else {
-          throw new Error(data.message || 'Failed to fetch subscription plans');
+          throw new Error(data.message || "Failed to fetch subscription plans");
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -63,13 +66,44 @@ function BuySubs() {
   };
 
   // Handle buy button click
-  const handleBuy = (planId: number) => {
-    alert(`Buying subscription plan with ID: ${planId}`);
-    // Add your payment integration logic here
+  const handleBuy = async (planId: number) => {
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+
+      // Make a request to your backend to get the payment URL
+      const response = await fetch(
+        "https://your-backend.com/api/phonepe/initiate-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ planId }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        // Redirect user to the PhonePe payment page
+        window.location.href = data.paymentUrl;
+      } else {
+        throw new Error(data.message || "Payment initiation failed");
+      }
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Something went wrong!");
+    }
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-purple-800">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-purple-800">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
@@ -120,8 +154,10 @@ function BuySubs() {
                   {plan.subscription_name}
                 </h2>
                 <p className="text-green-700  mb-4">
-                  <span className="font-semibold">Price:</span> ₹{plan.web_price} |{' '}
-                  <span className="font-semibold">Duration:</span> {plan.duration} months
+                  <span className="font-semibold">Price:</span> ₹
+                  {plan.web_price} |{" "}
+                  <span className="font-semibold">Duration:</span>{" "}
+                  {plan.duration} months
                 </p>
                 <div
                   className="text-gray-700 mb-4"

@@ -6,6 +6,8 @@ import UserStudyPage from "./pages/UserStudyPage.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
 import BuySubs from "./pages/BuySubs.tsx";
+import PaymentSuccess from "./pages/PaymentSuccess.tsx";
+import PaymentFailure from "./pages/PaymentFailure.tsx";
 // Function to check if the user is logged in
 const isLoggedIn = () => {
   const accessToken = localStorage.getItem("access_token");
@@ -50,6 +52,21 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/payment-success"
+          element={
+            <ProtectedRoute>
+              <PaymentSuccess />
+            </ProtectedRoute>
+          }
+        /><Route
+        path="/payment-failure"
+        element={
+          <ProtectedRoute>
+            <PaymentFailure />
+          </ProtectedRoute>
+        }
+      />
         <Route path="/aboutus" element={<AboutUs />} />
       </Routes>
     </div>
