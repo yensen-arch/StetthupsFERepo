@@ -395,7 +395,7 @@ function StudyComponent() {
                         subjectData[plan.id].length === 0) && (
                         <Button
                           className="bg-[#6739B7] text-white hover:bg-[#5a32a3] ml-4"
-                          onClick={() => window.open('/buysubs', '_blank')}                          >
+                          onClick={() => window.location.href='/buysubs'}                          >
                           Buy
                         </Button>
                       )}

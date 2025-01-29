@@ -15,22 +15,48 @@ interface SubscriptionPlan {
   updated_at: string;
 }
 
+interface UserSubscription {
+  id: number;
+  subscription_id: number;
+  price: number;
+  user_id: number;
+  start_date: string;
+  end_date: string;
+  payment_method: string;
+  transaction_id: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  subscription_cases: Array<{
+    id: number;
+    subscription_id: number;
+    case_id: number;
+    status: number;
+    created_at: string;
+    updated_at: string;
+  }>;
+}
+
 function BuySubs() {
   const navigate = useNavigate();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [userSubscriptions, setUserSubscriptions] = useState<
+    UserSubscription[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch subscription plans from the API
+  // Fetch subscription plans and user subscriptions
   useEffect(() => {
-    const fetchPlans = async () => {
+    const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("access_token");
         if (!accessToken) {
           throw new Error("Access token not found");
         }
 
-        const response = await fetch(
+        // Fetch subscription plans
+        const plansResponse = await fetch(
           "https://admin.stetthups.com/api/v1/get/subscription/plan",
           {
             method: "GET",
@@ -40,16 +66,42 @@ function BuySubs() {
           }
         );
 
-        if (!response.ok) {
+        if (!plansResponse.ok) {
           throw new Error("Failed to fetch subscription plans");
         }
 
-        const data = await response.json();
-        if (data.success) {
-          setPlans(data.data.slice(1));
-        } else {
-          throw new Error(data.message || "Failed to fetch subscription plans");
+        const plansData = await plansResponse.json();
+        if (!plansData.success) {
+          throw new Error(
+            plansData.message || "Failed to fetch subscription plans"
+          );
         }
+
+        // Fetch user subscriptions
+        const userSubscriptionsResponse = await fetch(
+          "https://admin.stetthups.com/api/v1/get/subscription/user",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (!userSubscriptionsResponse.ok) {
+          throw new Error("Failed to fetch user subscriptions");
+        }
+
+        const userSubscriptionsData = await userSubscriptionsResponse.json();
+        if (!userSubscriptionsData.success) {
+          throw new Error(
+            userSubscriptionsData.message ||
+              "Failed to fetch user subscriptions"
+          );
+        }
+
+        setPlans(plansData.data);
+        setUserSubscriptions(userSubscriptionsData.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -57,44 +109,56 @@ function BuySubs() {
       }
     };
 
-    fetchPlans();
+    fetchData();
   }, []);
+
+  // Filter out plans that the user has already purchased
+  const getUnpurchasedPlans = () => {
+    const purchasedSubscriptionIds = userSubscriptions.map(
+      (sub) => sub.subscription_id
+    );
+    return plans.filter((plan) => !purchasedSubscriptionIds.includes(plan.id));
+  };
 
   // Handle back button click
   const handleBack = () => {
-    navigate(-1);
+    navigate("/ ");
   };
 
   // Handle buy button click
-  const handleBuy = async (planId: number) => {
+  const handleBuy = async (plan: SubscriptionPlan) => {
     try {
       const accessToken = localStorage.getItem("access_token");
       if (!accessToken) {
         throw new Error("Access token not found");
       }
 
-      // Make a request to your backend to get the payment URL
+      const formData = new FormData();
+      formData.append("amount", plan.web_price.toString());
+      formData.append("subscription_id", plan.id.toString());
+
       const response = await fetch(
-        "https://your-backend.com/api/phonepe/initiate-payment",
+        "https://admin.stetthups.com/api/v1/pay/with/phonepe",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            Accept: "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({ planId }),
+          body: formData,
         }
       );
 
       const data = await response.json();
       if (data.success) {
-        // Redirect user to the PhonePe payment page
-        window.location.href = data.paymentUrl;
+        window.location.href = data.data.payment_url;
       } else {
         throw new Error(data.message || "Payment initiation failed");
       }
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Something went wrong!");
+      alert(
+        error instanceof Error ? error.message : "Payment initiation failed"
+      );
     }
   };
 
@@ -113,6 +177,8 @@ function BuySubs() {
       </div>
     );
   }
+
+  const unpurchasedPlans = getUnpurchasedPlans();
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -145,7 +211,7 @@ function BuySubs() {
             Our Subscription Plans
           </h1>
           <div className="space-y-6">
-            {plans.map((plan) => (
+            {unpurchasedPlans.map((plan) => (
               <div
                 key={plan.id}
                 className="bg-white text-left p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
@@ -153,7 +219,7 @@ function BuySubs() {
                 <h2 className="text-2xl font-bold text-purple-800 mb-2">
                   {plan.subscription_name}
                 </h2>
-                <p className="text-green-700  mb-4">
+                <p className="text-green-700 mb-4">
                   <span className="font-semibold">Price:</span> ₹
                   {plan.web_price} |{" "}
                   <span className="font-semibold">Duration:</span>{" "}
@@ -164,7 +230,7 @@ function BuySubs() {
                   dangerouslySetInnerHTML={{ __html: plan.description }}
                 />
                 <button
-                  onClick={() => handleBuy(plan.id)}
+                  onClick={() => handleBuy(plan)}
                   className="bg-purple-800 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   Buy Now
