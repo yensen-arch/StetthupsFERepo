@@ -10,7 +10,7 @@ function AboutUs() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="min-h-screen text-gray-800 bg-gradient-to-r from-pink-50 to-purple-50">
       {/* Back Button */}
       <div className="fixed top-4 left-4 z-50">
         <button
@@ -34,78 +34,57 @@ function AboutUs() {
       </div>
 
       {/* About Us Section */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-pink-50 to-purple-50">
+      <section className="py-16 px-4 md:px-8 ">
         <div className="max-w-4xl mx-auto text-left">
           <h1 className="text-4xl md:text-5xl font-bold text-purple-800 mb-6">
             About Us
           </h1>
           <p className="text-lg md:text-xl text-black leading-relaxed">
             At <span className="font-semibold text-purple-800">StetthUps</span>,
-            we are passionate about revolutionizing medical education. Founded
-            by a team of dedicated professionals with expertise in medical
-            training, our mission is to empower students and professionals
-            worldwide with innovative learning tools and resources. With a
-            commitment to excellence and a deep understanding of the challenges
-            faced in medical education, we strive to provide comprehensive
-            solutions that enhance learning outcomes and support the next
-            generation of healthcare professionals.
+            We are passionate about revolutionizing medical education. Our
+            mission is to empower medical students worldwide with innovative
+            audio-visual cases to excel in competitive exams such as NEET PG,
+            USMLE, and PLAB. Driven by a team of experienced medical
+            professionals and technology enthusiasts, we understand the
+            challenges faced by aspiring doctors in preparing for these rigorous
+            exams. That’s why we have created a comprehensive platform that
+            combines cutting-edge technology with expertly curated content to
+            provide an unparalleled learning experience. Our audio-visual cases
+            are meticulously designed to simulate real-life scenarios, allowing
+            students to hone their diagnostic and decision-making skills.
+            Whether you’re studying for NEET PG in India, USMLE in the United
+            States, or PLAB in the United Kingdom, StetthUps is your trusted
+            partner in achieving success. Join thousands of medical students who
+            have already benefited from our platform and embark on your journey
+            towards a successful medical career with confidence. Let StetthUps
+            be your guide to mastering the challenges of competitive exams and
+            realizing your full potential as a healthcare professional.
           </p>
         </div>
       </section>
 
-      {/* Terms & Conditions Section */}
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-purple-800 mb-8 text-left">
-            Terms & Conditions
-          </h2>
-          <div className="space-y-6 text-black text-left">
-            <p className="text-lg ">
-              By using our platform, you agree to the following terms and
-              conditions:
-            </p>
-            <ul className="list-disc list-inside space-y-4 text-lg">
-              <li>
-                All purchases made on our platform are subject to availability
-                and confirmation of the order.
-              </li>
-              <li>
-                Payments are processed securely through PhonePe Payment Gateway.
-                By completing a purchase, you agree to the terms of the payment
-                gateway.
-              </li>
-              <li>
-                We reserve the right to cancel any order at any time due to
-                unforeseen circumstances.
-              </li>
-              <li>
-                Refunds will be processed within 7-10 business days, subject to
-                our refund policy.
-              </li>
-              <li>
-                You are responsible for providing accurate information during
-                the checkout process. Incorrect details may result in delays or
-                cancellation of your order.
-              </li>
-              <li>
-                By using our platform, you agree to comply with all applicable
-                laws and regulations.
-              </li>
-            </ul>
-            <p className="text-lg">
-              For any questions or concerns regarding our terms and conditions,
-              please contact us at{" "}
-              <a
-                href="mailto:support@stetthups.com"
-                className="text-purple-800 underline"
-              >
-                support@stetthups.com
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Policy Buttons */}
+<div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pb-10 justify-center items-center">
+  <button
+    onClick={() => (window.location.href = "/terms")}
+    className="bg-purple-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-purple-600 transition-colors"
+  >
+    Terms & Conditions
+  </button>
+  <button
+    onClick={() => (window.location.href = "/privacy")}
+    className="bg-purple-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-purple-600 transition-colors"
+  >
+    Privacy Policy
+  </button>
+  <button
+    onClick={() => (window.location.href = "/refund")}
+    className="bg-purple-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-purple-600 transition-colors"
+  >
+    Refunds & Returns
+  </button>
+</div>
+
     </div>
   );
 }

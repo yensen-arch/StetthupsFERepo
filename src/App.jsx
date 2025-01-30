@@ -8,6 +8,9 @@ import AboutUs from "./pages/AboutUs.tsx";
 import BuySubs from "./pages/BuySubs.tsx";
 import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import PaymentFailure from "./pages/PaymentFailure.tsx";
+import TermsConditions from "./pages/TermsConditions.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import RefundPolicy from "./pages/RefundPolicy.tsx";
 // Function to check if the user is logged in
 const isLoggedIn = () => {
   const accessToken = localStorage.getItem("access_token");
@@ -68,6 +71,10 @@ function App() {
         }
       />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/terms" element={<TermsConditions />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/refund" element={<RefundPolicy />} />
+
       </Routes>
     </div>
   );
