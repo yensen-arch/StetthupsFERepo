@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SubscriptionPlan {
@@ -112,14 +112,6 @@ function BuySubs() {
     fetchData();
   }, []);
 
-  // Filter out plans that the user has already purchased
-  const getUnpurchasedPlans = () => {
-    const purchasedSubscriptionIds = userSubscriptions.map(
-      (sub) => sub.subscription_id
-    );
-    return plans.filter((plan) => !purchasedSubscriptionIds.includes(plan.id));
-  };
-
   // Handle back button click
   const handleBack = () => {
     navigate("/ ");
@@ -130,7 +122,7 @@ function BuySubs() {
     try {
       const accessToken = localStorage.getItem("access_token");
       if (!accessToken) {
-        throw new Error("Access token not found");
+        navigate("/login");
       }
 
       const formData = new FormData();
@@ -151,7 +143,8 @@ function BuySubs() {
 
       const data = await response.json();
       if (data.success) {
-        window.location.href = data.data.payment_url;
+        console.log(data.data.instrumentResponse.redirectInfo.url);
+        window.open(data.data.instrumentResponse.redirectInfo.url, "_blank");
       } else {
         throw new Error(data.message || "Payment initiation failed");
       }
@@ -177,8 +170,6 @@ function BuySubs() {
       </div>
     );
   }
-
-  const unpurchasedPlans = getUnpurchasedPlans();
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -211,32 +202,44 @@ function BuySubs() {
             Our Subscription Plans
           </h1>
           <div className="space-y-6">
-            {unpurchasedPlans.map((plan) => (
-              <div
-                key={plan.id}
-                className="bg-white text-left p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-              >
-                <h2 className="text-2xl font-bold text-purple-800 mb-2">
-                  {plan.subscription_name}
-                </h2>
-                <p className="text-green-700 mb-4">
-                  <span className="font-semibold">Price:</span> ₹
-                  {plan.web_price} |{" "}
-                  <span className="font-semibold">Duration:</span>{" "}
-                  {plan.duration} months
-                </p>
+            {plans.map((plan) => {
+              const userSubscription = userSubscriptions.find(
+                (sub) => sub.subscription_id === plan.id
+              );
+              return (
                 <div
-                  className="text-gray-700 mb-4"
-                  dangerouslySetInnerHTML={{ __html: plan.description }}
-                />
-                <button
-                  onClick={() => handleBuy(plan)}
-                  className="bg-purple-800 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                  key={plan.id}
+                  className="bg-white text-left p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  Buy Now
-                </button>
-              </div>
-            ))}
+                  <h2 className="text-2xl font-bold text-purple-800 mb-2">
+                    {plan.subscription_name}
+                  </h2>
+                  <p className="text-green-700 mb-4">
+                    <span className="font-semibold">Price:</span> ₹
+                    {plan.web_price} |{" "}
+                    <span className="font-semibold">Duration:</span>{" "}
+                    {plan.duration} months
+                  </p>
+                  <div
+                    className="text-gray-700 mb-4"
+                    dangerouslySetInnerHTML={{ __html: plan.description }}
+                  />
+                  {userSubscription ? (
+                    <p className="text-purple-800 font-semibold">
+                      Expires on:{" "}
+                      {new Date(userSubscription.end_date).toLocaleDateString()}
+                    </p>
+                  ) : (
+                    <button
+                      onClick={() => handleBuy(plan)}
+                      className="bg-purple-800 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                    >
+                      Buy Now
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
