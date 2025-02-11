@@ -140,11 +140,13 @@ function BuySubs() {
           body: formData,
         }
       );
-
       const data = await response.json();
-      if (data.success) {
-        console.log(data.data.instrumentResponse.redirectInfo.url);
-        window.open(data.data.instrumentResponse.redirectInfo.url, "_blank");
+      console.log(data.data.data.instrumentResponse.redirectInfo.url,"yes");
+      if (data.status) {
+        console.log(data.data.data.instrumentResponse.redirectInfo.url,"yessss");
+        const newTab = window.open("", "_blank");
+        newTab.location.href =
+          data.data.data.instrumentResponse.redirectInfo.url;
       } else {
         throw new Error(data.message || "Payment initiation failed");
       }
