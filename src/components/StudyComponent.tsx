@@ -357,12 +357,7 @@ function StudyComponent() {
         <div className="flex flex-col md:flex-row justify-between items-left">
           {/* Responsive View */}
           <div className="bg-purple-800 rounded-lg block md:hidden py-4 px-1">
-            <h1 className="text-white text-xl font-bold">
-            You're Getting There {" "}
-              <span className="text-white font-bold">
-                Dr. {user?.first_name || "User"}!
-              </span>
-            </h1>
+            <h1 className="text-white text-xl font-bold">Your Subscriptions</h1>
           </div>
 
           {/* Desktop View */}
@@ -371,10 +366,7 @@ function StudyComponent() {
               className={`text-3xl font-bold flex items-center gap-2
             text-white md:flex-row md:justify-start`}
             >
-              You're Getting There Dr. {user?.first_name || "User"}!
-              <span role="img" aria-label="waving hand" className="text-6xl">
-                🏆
-              </span>
+              Your Subscriptions
             </h1>
           </div>
         </div>
