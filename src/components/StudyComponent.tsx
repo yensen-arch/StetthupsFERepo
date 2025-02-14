@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProgressCircles from "./ProgressCircles.tsx";
-
 interface Case {
   id: number;
   case_name: string;
@@ -131,9 +130,9 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
 
 function StudyComponent() {
   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
-    
+    window.scrollTo(0, 0);
+  }, []);
+
   const [selectedNames, setSelectedNames] = useState<{
     subjectName: string | null;
     topicName: string | null;
@@ -345,8 +344,41 @@ function StudyComponent() {
       </div>
     );
   }
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
   return (
     <div className=" md:p-6 bg-gray-50 min-h-screen  ">
+      {/* Welcome Banner */}
+      <div
+        className={`rounded-2xl py-1 mb-8 relative overflow-hidden text-left
+                  text-black md:px-8 md:bg-gradient-to-r md:from-[#4A0E78] md:to-[#6739B7] 
+                  md:text-white transition-all duration-300`}
+      >
+        <div className="flex flex-col md:flex-row justify-between items-left">
+          {/* Responsive View */}
+          <div className="bg-purple-800 rounded-lg block md:hidden py-4 px-1">
+            <h1 className="text-white text-xl font-bold">
+            You're Getting There {" "}
+              <span className="text-white font-bold">
+                Dr. {user?.first_name || "User"}!
+              </span>
+            </h1>
+          </div>
+
+          {/* Desktop View */}
+          <div className="hidden md:space-y-2 md:mb-4 md:mb-0 md:block py-4">
+            <h1
+              className={`text-3xl font-bold flex items-center gap-2
+            text-white md:flex-row md:justify-start`}
+            >
+              You're Getting There Dr. {user?.first_name || "User"}!
+              <span role="img" aria-label="waving hand" className="text-6xl">
+                🏆
+              </span>
+            </h1>
+          </div>
+        </div>
+      </div>
       {error && (
         <p className="text-red-500 mb-6 text-center rounded-lg bg-red-50 p-4">
           {error}
@@ -395,7 +427,8 @@ function StudyComponent() {
                         subjectData[plan.id].length === 0) && (
                         <Button
                           className="bg-[#6739B7] text-white hover:bg-[#5a32a3] ml-4"
-                          onClick={() => window.location.href='/buysubs'}                          >
+                          onClick={() => (window.location.href = "/buysubs")}
+                        >
                           Buy
                         </Button>
                       )}

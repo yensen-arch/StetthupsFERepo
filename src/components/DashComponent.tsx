@@ -53,13 +53,7 @@ function DashComponent({ setActiveButton }) {
                 </span>
               </h1>
               <div className={`text-white/90`}>
-                <p className="text-lg text-left">
-                  You've learned <span className="font-semibold">70%</span> of
-                  your goal this week!
-                </p>
-                <p className="text-sm mt-1 text-left">
-                  Keep it up and improve your progress.
-                </p>
+                <p className="text-lg text-left">Keep on Learning!</p>
               </div>
             </div>
 

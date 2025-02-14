@@ -141,12 +141,13 @@ function BuySubs() {
         }
       );
       const data = await response.json();
-      console.log(data.data.data.instrumentResponse.redirectInfo.url,"yes");
       if (data.status) {
-        console.log(data.data.data.instrumentResponse.redirectInfo.url,"yessss");
         const newTab = window.open("", "_blank");
-        newTab.location.href =
-          data.data.data.instrumentResponse.redirectInfo.url;
+        if (newTab) {
+          newTab.location.href = data.data.data.instrumentResponse.redirectInfo.url;
+        } else {
+          window.location.href = data.data.data.instrumentResponse.redirectInfo.url; // Fallback if popup is blocked
+        }
       } else {
         throw new Error(data.message || "Payment initiation failed");
       }
