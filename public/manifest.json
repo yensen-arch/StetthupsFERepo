@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "StetthUps",
+  "name": "Stetthups: Ace NEET-PG/FMGE/USMLE/PlAB with audio visual Qbank",
+  "description": "Get access to over 20k questions with over 97% strike rate, along with concise snapshot for every question. India’s top medical QBank with audio visual and graphical learning",
   "icons": [
     {
       "src": "favicon.ico",
